@@ -1,7 +1,7 @@
 package br.com.aurock.crusobackend.resource;
 
-import br.com.aurock.crusobackend.domain.Categoria;
-import br.com.aurock.crusobackend.service.CategoriaService;
+import br.com.aurock.crusobackend.domain.Cliente;
+import br.com.aurock.crusobackend.service.ClienteService;
 import br.com.aurock.crusobackend.util.Log;
 import br.com.aurock.crusobackend.util.Mensagens;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,17 +12,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/categorias")
-public class CategoriaResource {
+@RequestMapping(value = "/clientes")
+public class ClienteResource {
 
     @Autowired
-    private CategoriaService categoriaService;
+    private ClienteService clienteService;
 
-    private final Log logRecursoCategoria = new Log(this);
+    private Log logResourceCliente = new Log(this);
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Categoria> buscarCategoria(@PathVariable Integer id){
-        logRecursoCategoria.getLogger().info(Mensagens.MSG_REQUISICAO_BUSCA_POR_ID,getClass().getName());
-        return ResponseEntity.ok().body(categoriaService.buscarCategoria(id));
+    public ResponseEntity<Cliente> obterDadosCliente(@PathVariable Integer id){
+        logResourceCliente.getLogger().info(Mensagens.MSG_REQUISICAO_BUSCA_POR_ID,getClass().getName());
+        return ResponseEntity.ok().body(clienteService.obterDadosCliente(id));
     }
 }

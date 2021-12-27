@@ -1,5 +1,6 @@
 package br.com.aurock.crusobackend.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,6 +30,7 @@ public class Endereco implements Serializable {
     @JoinColumn(name = "cidade_id")
     private Cidade cidade;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
