@@ -1,5 +1,6 @@
 package br.com.aurock.crusobackend.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,6 +37,7 @@ public class Pedido implements Serializable {
     @JoinColumn(name = "endereco_de_entrega")
     private Endereco enderecoDeEntrega;
 
+    @OneToMany(mappedBy = "itemPedidoPK.pedido")
     private Set<ItemPedido> itens = new HashSet<>();
 
     public Pedido(Integer id, Date instante, Cliente cliente, Endereco endereco) {

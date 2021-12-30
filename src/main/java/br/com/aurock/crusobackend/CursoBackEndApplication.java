@@ -41,6 +41,9 @@ public class CursoBackEndApplication implements CommandLineRunner {
 	@Autowired
 	private PedidoRepository pedidoRepository;
 
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
+
 	public static void main(String[] args) {
 		SpringApplication.run(CursoBackEndApplication.class, args);
 	}
@@ -84,6 +87,16 @@ public class CursoBackEndApplication implements CommandLineRunner {
 		ped2.setPagamento(pag2);
 		cl1.getPedidos().addAll(Arrays.asList(ped1,ped2));
 
+		ItemPedido item1 = new ItemPedido(ped1,p1,0.00,1,2000.00);
+		ItemPedido item2 = new ItemPedido(ped1,p3,0.00,2,80.00);
+		ItemPedido item3 = new ItemPedido(ped2,p2,100.00,1,800.00);
+
+		ped1.getItens().addAll(Arrays.asList(item1,item2));
+		ped2.getItens().add(item3);
+		p1.getItens().add(item1);
+		p2.getItens().add(item3);
+		p3.getItens().add(item2);
+
 		e1.getCidades().add(c1);
 		e2.getCidades().addAll(Arrays.asList(c2,c3));
 
@@ -95,5 +108,6 @@ public class CursoBackEndApplication implements CommandLineRunner {
 		enderecoRepository.saveAll(Arrays.asList(end1,end2));
 		pedidoRepository.saveAll(Arrays.asList(ped1,ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pag1,pag2));
+		itemPedidoRepository.saveAll(Arrays.asList(item1,item2,item3));
 	}
 }

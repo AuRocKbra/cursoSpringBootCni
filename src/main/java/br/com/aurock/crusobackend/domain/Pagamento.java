@@ -1,6 +1,8 @@
 package br.com.aurock.crusobackend.domain;
 
 import br.com.aurock.crusobackend.domain.enuns.EstadoPagamento;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,6 +27,7 @@ public abstract class Pagamento implements Serializable {
     @OneToOne
     @JoinColumn(name = "pedido_id")
     @MapsId
+    @JsonIgnore
     private Pedido pedido;
 
     public Pagamento(Integer id, EstadoPagamento estadoPagamento, Pedido pedido) {
