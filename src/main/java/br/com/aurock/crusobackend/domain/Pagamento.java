@@ -5,10 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -16,21 +13,32 @@ import java.util.Objects;
 @Entity
 @Getter
 @Setter
-public class Pagamento implements Serializable {
+@Inheritance(strategy =  InheritanceType.JOINED)
+public abstract class Pagamento implements Serializable {
 
     private static final Long serialVersionUID = 1l;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private EstadoPagamento estadoPagamento;
+    private Integer estadoPagamento;
 
+    @OneToOne
+    @JoinColumn(name = "pedido_id")
+    @MapsId
     private Pedido pedido;
 
     public Pagamento(Integer id, EstadoPagamento estadoPagamento, Pedido pedido) {
         this.id = id;
-        this.estadoPagamento = estadoPagamento;
+        this.estadoPagamento = estadoPagamento.getCodigo();
         this.pedido = pedido;
+    }
+
+    public void setEstadoPagamento(EstadoPagamento estadoPagamento){
+        this.estadoPagamento = estadoPagamento.getCodigo();
+    }
+
+    public EstadoPagamento getEstadoPagamento(){
+        return EstadoPagamento.toEnum(estadoPagamento);
     }
 
     @Override

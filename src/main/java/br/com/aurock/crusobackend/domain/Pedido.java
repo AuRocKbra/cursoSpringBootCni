@@ -4,13 +4,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @NoArgsConstructor
 @Entity
@@ -26,18 +25,24 @@ public class Pedido implements Serializable {
     private Integer id;
     private Date instante;
 
+    @OneToOne(cascade = CascadeType.ALL,mappedBy = "pedido")
     private Pagamento pagamento;
 
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
-    private Endereco endereco;
+    @ManyToOne
+    @JoinColumn(name = "endereco_de_entrega")
+    private Endereco enderecoDeEntrega;
 
-    public Pedido(Integer id, Date instante, Pagamento pagamento, Cliente cliente, Endereco endereco) {
+    private Set<ItemPedido> itens = new HashSet<>();
+
+    public Pedido(Integer id, Date instante, Cliente cliente, Endereco endereco) {
         this.id = id;
         this.instante = instante;
-        this.pagamento = pagamento;
         this.cliente = cliente;
-        this.endereco = endereco;
+        this.enderecoDeEntrega = endereco;
     }
 
     @Override

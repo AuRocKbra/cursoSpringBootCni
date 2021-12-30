@@ -1,14 +1,18 @@
 package br.com.aurock.crusobackend;
 
 import br.com.aurock.crusobackend.domain.*;
+import br.com.aurock.crusobackend.domain.enuns.EstadoPagamento;
 import br.com.aurock.crusobackend.domain.enuns.TipoCliente;
 import br.com.aurock.crusobackend.repository.*;
+import net.bytebuddy.implementation.auxiliary.AuxiliaryType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 
 @SpringBootApplication
 public class CursoBackEndApplication implements CommandLineRunner {
@@ -31,12 +35,20 @@ public class CursoBackEndApplication implements CommandLineRunner {
 	@Autowired
 	private EnderecoRepository enderecoRepository;
 
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
+
+	@Autowired
+	private PedidoRepository pedidoRepository;
+
 	public static void main(String[] args) {
 		SpringApplication.run(CursoBackEndApplication.class, args);
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
 		Categoria cat1 = new Categoria(null,"Informática");
 		Categoria cat2 = new Categoria(null,"Escritório");
 
@@ -64,6 +76,14 @@ public class CursoBackEndApplication implements CommandLineRunner {
 		Endereco end1 = new Endereco(null,"Rua Flores","300","Apto 203","Jardim","38220834",cl1,c1);
 		Endereco end2 = new Endereco(null,"Avenida Matos","105","Sala 800","Centro","38777012",cl1,c2);
 
+		Pedido ped1 = new Pedido(null,sdf.parse("30/09/2017 10:32"),cl1,end1);
+		Pedido ped2 = new Pedido(null,sdf.parse("10/10/2017 19:35"),cl1,end2);
+		Pagamento pag1 = new PagamentoCartao(null,EstadoPagamento.QUITADO,ped1,6);
+		Pagamento pag2 = new PagamentoBoleto(null,EstadoPagamento.PENDENTE,ped2,sdf.parse("20/10/2017 00:00"),null);
+		ped1.setPagamento(pag1);
+		ped2.setPagamento(pag2);
+		cl1.getPedidos().addAll(Arrays.asList(ped1,ped2));
+
 		e1.getCidades().add(c1);
 		e2.getCidades().addAll(Arrays.asList(c2,c3));
 
@@ -73,5 +93,7 @@ public class CursoBackEndApplication implements CommandLineRunner {
 		cidadeRepository.saveAll(Arrays.asList(c1,c2,c3));
 		clienteRepository.save(cl1);
 		enderecoRepository.saveAll(Arrays.asList(end1,end2));
+		pedidoRepository.saveAll(Arrays.asList(ped1,ped2));
+		pagamentoRepository.saveAll(Arrays.asList(pag1,pag2));
 	}
 }
