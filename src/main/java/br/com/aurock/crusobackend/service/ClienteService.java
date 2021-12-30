@@ -21,7 +21,7 @@ public class ClienteService {
     public Cliente obterDadosCliente(Integer id){
         logClienteService.getLogger().info(Mensagens.MSG_CLIENTE_SERVICE_BUSCA_ID,id);
         Optional<Cliente> cliente = clienteRepository.findById(id);
-        logClienteService.getLogger().info(Mensagens.MSG_CLIENTE_RESULTADO_BUSCA_ID,id,cliente.isPresent());
+        logClienteService.getLogger().info(Mensagens.MSG_RESULTADO_BUSCA_ID,id,cliente.isPresent());
         return cliente.orElseThrow(()->new ObjetoNaoEncontradoException(Mensagens.MSG_OBJECTO_NAO_ENCONTRADO,null));
     }
 }

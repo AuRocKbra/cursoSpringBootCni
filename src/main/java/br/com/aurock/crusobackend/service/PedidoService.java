@@ -21,7 +21,7 @@ public class PedidoService {
     public Pedido obterDadosPedidoPorId(Integer id){
         logPedidoService.getLogger().info(Mensagens.MSG_PEDIDO_SERVICE_BUSCA_ID,id);
         Optional<Pedido> pedido = pedidoRepository.findById(id);
-        logPedidoService.getLogger().info(Mensagens.MSG_PEDIDO_RESULTADO_BUSCA_ID,id,pedido.isPresent());
+        logPedidoService.getLogger().info(Mensagens.MSG_RESULTADO_BUSCA_ID,id,pedido.isPresent());
         return pedido.orElseThrow(()->new ObjetoNaoEncontradoException(Mensagens.MSG_OBJECTO_NAO_ENCONTRADO));
     }
 }
