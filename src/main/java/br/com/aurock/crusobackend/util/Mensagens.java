@@ -17,5 +17,8 @@ public class Mensagens {
     public static final String MSG_SERVICE_ATUALIZA_OBJETO_RESULTADO = "Resultado de atualização do objeto {} -> Objeto atualizado ? {}";
     public static final String MSG_OPERACAO_NAO_REALIZADA = "Um erro interno não permitiu que a operação fosse finalizada!";
     public static final String MSG_REQUISICAO_ATUALIZACAO_OBJETO = "Requisição de atualização recebido pelo resource {}";
+    public static final String MSG_REQUISICAO_DELETE_OBJETO = "Requisição de deleção recebido pelo resource {}";
+    public static final String MSG_SERVICE_DELETA_OBJETO = "Serviço de deleção de categoria: Deletando categoria de ID = {}";
+    public static final String MSG_OPERACAO_NAO_PERMITIDA = "Não é permitido deletar a categoria selecionada!";
 
 }
