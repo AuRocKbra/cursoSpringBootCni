@@ -22,7 +22,7 @@ public class PedidoResource {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<Pedido> obterDadosPedidoPorId(@PathVariable Integer id){
-        logPedidoResource.getLogger().info(Mensagens.MSG_REQUISICAO_BUSCA_POR_ID,getClass().getName());
+        logPedidoResource.getLogger().info(Mensagens.MSG_REQUISICAO_BUSCA_POR_ID,getClass().getSimpleName());
         return ResponseEntity.ok().body(pedidoService.obterDadosPedidoPorId(id));
     }
 }

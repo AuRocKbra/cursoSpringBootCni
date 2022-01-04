@@ -22,7 +22,7 @@ public class ClienteResource {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<Cliente> obterDadosCliente(@PathVariable Integer id){
-        logResourceCliente.getLogger().info(Mensagens.MSG_REQUISICAO_BUSCA_POR_ID,getClass().getName());
+        logResourceCliente.getLogger().info(Mensagens.MSG_REQUISICAO_BUSCA_POR_ID,getClass().getSimpleName());
         return ResponseEntity.ok().body(clienteService.obterDadosCliente(id));
     }
 }

@@ -1,17 +1,19 @@
 package br.com.aurock.crusobackend.service;
 
 import br.com.aurock.crusobackend.domain.Categoria;
+import br.com.aurock.crusobackend.domain.DTO.CategoriaDTO;
 import br.com.aurock.crusobackend.repository.CategoriaRepository;
 import br.com.aurock.crusobackend.service.exceptions.ObjetoNaoEncontradoException;
 import br.com.aurock.crusobackend.service.exceptions.OperacaoNaoPermitidaException;
 import br.com.aurock.crusobackend.service.exceptions.OperacaoNaoRealizadaException;
 import br.com.aurock.crusobackend.util.Log;
 import br.com.aurock.crusobackend.util.Mensagens;
-import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -55,12 +57,24 @@ public class CategoriaService {
     }
 
     public void deletaCategoriaPorId(Integer id){
-        logCategoriaService.getLogger().info(Mensagens.MSG_SERVICE_DELETA_OBJETO,id);
+        logCategoriaService.getLogger().info(Mensagens.MSG_CATEGORIA_SERVICE_DELETA_OBJETO,id);
         buscarCategoria(id);
         try {
             categoriaRepository.deleteById(id);
         }catch (DataIntegrityViolationException e){
             throw new OperacaoNaoPermitidaException(Mensagens.MSG_OPERACAO_NAO_PERMITIDA,e.getCause());
+        }
+    }
+
+    public List<Categoria> listarCategorias(){
+        logCategoriaService.getLogger().info(Mensagens.MSG_CATEGORIA_SERVICE_LISTAR_OBJETO);
+        List<Categoria> categorias = categoriaRepository.findAll();
+        if(categorias.isEmpty()){
+            throw new ObjetoNaoEncontradoException(Mensagens.MSG_OBJECTO_NAO_ENCONTRADO,null);
+        }
+        else{
+            logCategoriaService.getLogger().info(Mensagens.MSG_RESULTADO_LISTAGEM,true);
+            return categorias;
         }
     }
 }
