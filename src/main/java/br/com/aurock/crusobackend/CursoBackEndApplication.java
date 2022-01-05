@@ -13,6 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.concurrent.CancellationException;
 
 @SpringBootApplication
 public class CursoBackEndApplication implements CommandLineRunner {
@@ -54,6 +55,13 @@ public class CursoBackEndApplication implements CommandLineRunner {
 
 		Categoria cat1 = new Categoria(null,"Informática");
 		Categoria cat2 = new Categoria(null,"Escritório");
+		Categoria cat3 = new Categoria(null,"Limpeza");
+		Categoria cat4 = new Categoria(null, "Verduras");
+		Categoria cat5 = new Categoria(null, "Cozinha");
+		Categoria cat6 = new Categoria(null,"Açougue");
+		Categoria cat7 = new Categoria(null,"Adega");
+		Categoria cat8 = new Categoria(null, "Cereais");
+		Categoria cat9 = new Categoria(null,"Bomboniere");
 
 		Produto p1 = new Produto(null, "Computador",2000.00);
 		Produto p2 = new Produto(null, "Impressora",800.00);
@@ -100,7 +108,7 @@ public class CursoBackEndApplication implements CommandLineRunner {
 		e1.getCidades().add(c1);
 		e2.getCidades().addAll(Arrays.asList(c2,c3));
 
-		categoriaRepository.saveAll(Arrays.asList(cat1,cat2));
+		categoriaRepository.saveAll(Arrays.asList(cat1,cat2,cat3,cat4,cat5,cat6,cat7,cat8,cat9));
 		produtoRepository.saveAll(Arrays.asList(p1,p2,p3));
 		estadoRepository.saveAll(Arrays.asList(e1,e2));
 		cidadeRepository.saveAll(Arrays.asList(c1,c2,c3));

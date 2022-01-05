@@ -23,5 +23,8 @@ public class Mensagens {
     public static final String MSG_REQUISICAO_LISTAGEM = "Requisição de listagem recebida pelo resource {}";
     public static final String MSG_CATEGORIA_SERVICE_LISTAR_OBJETO = "Serviço de listagem de categoria: Carregando categorias";
     public static final String MSG_RESULTADO_LISTAGEM = "Resultado da listagem -> Valor encontrado ? {}";
+    public static final String MSG_CATEGORIA_SERVICE_LISTAR_PAGINADA_OBJETO = "Serviço de listagem de categoria paginada: Carregando categorias";
+    public static final String MSG_REQUISICAO_LISTAGEM_PAGINADA = "Requisição de listagem paginada recebida pelo resource {}";
+
 
 }

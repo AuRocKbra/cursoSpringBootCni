@@ -10,6 +10,9 @@ import br.com.aurock.crusobackend.util.Log;
 import br.com.aurock.crusobackend.util.Mensagens;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -76,5 +79,16 @@ public class CategoriaService {
             logCategoriaService.getLogger().info(Mensagens.MSG_RESULTADO_LISTAGEM,true);
             return categorias;
         }
+    }
+
+    public Page<Categoria> listaCategoriaPaginada(Integer pagina, Integer linhasPorPagina, String ordenadoPor, String ordem){
+        logCategoriaService.getLogger().info(Mensagens.MSG_CATEGORIA_SERVICE_LISTAR_PAGINADA_OBJETO);
+        PageRequest pageRequest = PageRequest.of(pagina,linhasPorPagina, Sort.Direction.valueOf(ordem),ordenadoPor);
+        return categoriaRepository.findAll(pageRequest);
+    }
+
+    public Categoria converterParaCategoriaDTO(CategoriaDTO categoriaDTO){
+        Categoria categoria = new Categoria(categoriaDTO.getId(),categoriaDTO.getNome());
+        return categoria;
     }
 }
