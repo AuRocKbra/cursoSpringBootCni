@@ -3,8 +3,11 @@ package br.com.aurock.crusobackend.repository.handler;
 import br.com.aurock.crusobackend.service.exceptions.ObjetoNaoEncontradoException;
 import br.com.aurock.crusobackend.service.exceptions.OperacaoNaoPermitidaException;
 import br.com.aurock.crusobackend.service.exceptions.OperacaoNaoRealizadaException;
+import br.com.aurock.crusobackend.util.Mensagens;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -28,6 +31,15 @@ public class ResourceExceptionHandler {
     @ExceptionHandler(OperacaoNaoPermitidaException.class)
     public ResponseEntity<ObjetoErro> operacaoNaoPermitidaException(OperacaoNaoPermitidaException e, HttpServletRequest request){
         ObjetoErro erro = new ObjetoErro(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ObjetoDeValidacao> erroDeValidacaoException(MethodArgumentNotValidException e, HttpServletRequest request){
+        ObjetoDeValidacao erro = new ObjetoDeValidacao(HttpStatus.BAD_REQUEST.value(), Mensagens.MSG_VALIDACAO_CAMPO,System.currentTimeMillis());
+        for(FieldError er: e.getBindingResult().getFieldErrors()){
+            erro.setErros(er.getField(),er.getDefaultMessage());
+        }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
     }
 }
