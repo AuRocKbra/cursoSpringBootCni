@@ -58,7 +58,7 @@ public class CategoriaResource {
     @PostMapping
     public ResponseEntity<Void> criarNovaCategoria(@Valid @RequestBody CategoriaDTO categoriaDTO){
         logRecursoCategoria.getLogger().info(Mensagens.MSG_REQUISICAO_CRIACAO_OBJETO,getClass().getSimpleName());
-        Categoria novaCategoria = categoriaService.converterParaCategoriaDTO(categoriaDTO);
+        Categoria novaCategoria = categoriaService.converterParaCategoria(categoriaDTO);
         novaCategoria = categoriaService.criaNovaCategoria(novaCategoria);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(novaCategoria.getId()).toUri();
         return ResponseEntity.created(uri).build();
@@ -67,7 +67,7 @@ public class CategoriaResource {
     @PutMapping(value = "/{id}")
     public ResponseEntity<Void> atualizaCategoria(@PathVariable Integer id, @Valid @RequestBody CategoriaDTO categoriaAtualizada){
         logRecursoCategoria.getLogger().info(Mensagens.MSG_REQUISICAO_ATUALIZACAO_OBJETO,getClass().getSimpleName());
-        categoriaService.atualizaCategoria(id,categoriaService.converterParaCategoriaDTO(categoriaAtualizada));
+        categoriaService.atualizaCategoria(id,categoriaService.converterParaCategoria(categoriaAtualizada));
         return ResponseEntity.noContent().build();
     }
 

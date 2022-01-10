@@ -28,14 +28,14 @@ public class CategoriaService {
     private final Log logCategoriaService = new Log(this);
 
     public Categoria buscarCategoria(Integer id){
-        logCategoriaService.getLogger().info(Mensagens.MSG_CATEGORIA_SERVICE_BUSCA_ID,id);
+        logCategoriaService.getLogger().info(Mensagens.MSG_SERVICE_BUSCA_ID,getClass().getSimpleName(),id);
         Optional<Categoria> categoria = categoriaRepository.findById(id);
         logCategoriaService.getLogger().info(Mensagens.MSG_RESULTADO_BUSCA_ID,id,categoria.isPresent());
         return categoria.orElseThrow(()->new ObjetoNaoEncontradoException(Mensagens.MSG_OBJECTO_NAO_ENCONTRADO,null));
     }
 
     public Categoria criaNovaCategoria(Categoria categoria){
-        logCategoriaService.getLogger().info(Mensagens.MSG_CATEGORIA_SERVICE_CRIA_OBJETO);
+        logCategoriaService.getLogger().info(Mensagens.MSG_SERVICE_CRIA_OBJETO,getClass().getSimpleName());
         try {
             categoria.setId(null);
             Categoria novaCategoria = categoriaRepository.save(categoria);
@@ -47,7 +47,7 @@ public class CategoriaService {
     }
 
     public Categoria atualizaCategoria(Integer id, Categoria categoria){
-        logCategoriaService.getLogger().info(Mensagens.MSG_CATEGORIA_SERVICE_ATUALIZA_OBJETO,id);
+        logCategoriaService.getLogger().info(Mensagens.MSG_SERVICE_ATUALIZA_OBJETO,getClass().getSimpleName(),id);
         Categoria categoriaAntiga = buscarCategoria(id);
         try{
             categoriaAntiga.setNome(categoria.getNome());
@@ -60,7 +60,7 @@ public class CategoriaService {
     }
 
     public void deletaCategoriaPorId(Integer id){
-        logCategoriaService.getLogger().info(Mensagens.MSG_CATEGORIA_SERVICE_DELETA_OBJETO,id);
+        logCategoriaService.getLogger().info(Mensagens.MSG_SERVICE_DELETA_OBJETO,getClass().getSimpleName(),id);
         buscarCategoria(id);
         try {
             categoriaRepository.deleteById(id);
@@ -70,7 +70,7 @@ public class CategoriaService {
     }
 
     public List<Categoria> listarCategorias(){
-        logCategoriaService.getLogger().info(Mensagens.MSG_CATEGORIA_SERVICE_LISTAR_OBJETO);
+        logCategoriaService.getLogger().info(Mensagens.MSG_SERVICE_LISTAR_OBJETO,getClass().getSimpleName());
         List<Categoria> categorias = categoriaRepository.findAll();
         if(categorias.isEmpty()){
             throw new ObjetoNaoEncontradoException(Mensagens.MSG_OBJECTO_NAO_ENCONTRADO,null);
@@ -82,12 +82,12 @@ public class CategoriaService {
     }
 
     public Page<Categoria> listaCategoriaPaginada(Integer pagina, Integer linhasPorPagina, String ordenadoPor, String ordem){
-        logCategoriaService.getLogger().info(Mensagens.MSG_CATEGORIA_SERVICE_LISTAR_PAGINADA_OBJETO);
+        logCategoriaService.getLogger().info(Mensagens.MSG_SERVICE_LISTAR_PAGINADA_OBJETO,getClass().getSimpleName());
         PageRequest pageRequest = PageRequest.of(pagina,linhasPorPagina, Sort.Direction.valueOf(ordem),ordenadoPor);
         return categoriaRepository.findAll(pageRequest);
     }
 
-    public Categoria converterParaCategoriaDTO(CategoriaDTO categoriaDTO){
+    public Categoria converterParaCategoria(CategoriaDTO categoriaDTO){
         Categoria categoria = new Categoria(categoriaDTO.getId(),categoriaDTO.getNome());
         return categoria;
     }
