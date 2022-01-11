@@ -17,12 +17,17 @@ public class Mensagens {
     public static final String MSG_REQUISICAO_ATUALIZACAO_OBJETO = "Requisição de atualização recebida pelo resource {}";
     public static final String MSG_REQUISICAO_DELETE_OBJETO = "Requisição de deleção recebida pelo resource {}";
     public static final String MSG_SERVICE_DELETA_OBJETO = "Serviço de deleção de {}: Deletando objeto de ID = {}";
-    public static final String MSG_OPERACAO_NAO_PERMITIDA = "Não é permitido deletar a categoria selecionada!";
+    public static final String MSG_OPERACAO_NAO_PERMITIDA = "Não é permitido deletar o objeto selecionado!";
     public static final String MSG_REQUISICAO_LISTAGEM = "Requisição de listagem recebida pelo resource {}";
     public static final String MSG_SERVICE_LISTAR_OBJETO = "Serviço de listagem de {}: Carregando objetos";
     public static final String MSG_RESULTADO_LISTAGEM = "Resultado da listagem -> Valor encontrado ? {}";
     public static final String MSG_SERVICE_LISTAR_PAGINADA_OBJETO = "Serviço de listagem de {} paginada: Carregando objetos";
     public static final String MSG_REQUISICAO_LISTAGEM_PAGINADA = "Requisição de listagem paginada recebida pelo resource {}";
     public static final String MSG_VALIDACAO_CAMPO = "Erro de validação de campo";
+    public static final String MSG_CAMPO_VAZIO = "O campo não pode estar vazio";
+    public static final String MSG_TAMANHO_STRING_PART1 = "O tamanho deve ser entre ";
+    public static final String MSG_LIGACAO_FRASE = " e ";
+    public static final String MSG_TAMANHO_STRING_PART2 = " caracteres!";
+    public static final String MSG_VALIDACAO_EMAIL = "Email inválido";
 
 }

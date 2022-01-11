@@ -1,8 +1,6 @@
 package br.com.aurock.crusobackend.resource;
 
-import br.com.aurock.crusobackend.domain.Categoria;
 import br.com.aurock.crusobackend.domain.Cliente;
-import br.com.aurock.crusobackend.domain.DTO.CategoriaDTO;
 import br.com.aurock.crusobackend.domain.DTO.ClienteDTO;
 import br.com.aurock.crusobackend.service.ClienteService;
 import br.com.aurock.crusobackend.util.Log;
@@ -12,7 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,7 +20,7 @@ public class ClienteResource {
     @Autowired
     private ClienteService clienteService;
 
-    private Log logResourceCliente = new Log(this);
+    private final Log logResourceCliente = new Log(this);
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<Cliente> obterDadosCliente(@PathVariable Integer id){
@@ -40,13 +37,13 @@ public class ClienteResource {
     }
 
     @GetMapping(value = "/page")
-    public ResponseEntity<Page<ClienteDTO>> listarTodasCategoriasPaginado(
+    public ResponseEntity<Page<ClienteDTO>> listarClientesPaginado(
             @RequestParam(value = "pagina", defaultValue = "0") Integer pagina,
             @RequestParam(value = "linhasPorPagina",defaultValue = "24") Integer linhasPorPagina,
             @RequestParam(value = "ordenadoPor", defaultValue = "nome")String ordenadoPor,
             @RequestParam(value = "ordem",defaultValue = "ASC")String ordem){
         logResourceCliente.getLogger().info(Mensagens.MSG_REQUISICAO_LISTAGEM_PAGINADA,getClass().getSimpleName());
-        Page<Cliente> clientes = clienteService.listaCategoriaPaginada(pagina,linhasPorPagina,ordenadoPor,ordem);
+        Page<Cliente> clientes = clienteService.listaClientePaginada(pagina,linhasPorPagina,ordenadoPor,ordem);
         Page<ClienteDTO> clienteDTOPage = clientes.map(obj -> new ClienteDTO(obj));
         return ResponseEntity.ok().body(clienteDTOPage);
     }
@@ -61,7 +58,7 @@ public class ClienteResource {
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deletaCliente(@PathVariable Integer id){
         logResourceCliente.getLogger().info(Mensagens.MSG_SERVICE_DELETA_OBJETO,getClass().getSimpleName());
-        clienteService.deletaCliente(id);
+        clienteService.deletaClientePorId(id);
         return ResponseEntity.noContent().build();
     }
 }
