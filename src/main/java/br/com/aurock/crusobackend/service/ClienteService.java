@@ -1,8 +1,13 @@
 package br.com.aurock.crusobackend.service;
 
+import br.com.aurock.crusobackend.domain.Cidade;
 import br.com.aurock.crusobackend.domain.Cliente;
 import br.com.aurock.crusobackend.domain.DTO.ClienteDTO;
+import br.com.aurock.crusobackend.domain.DTO.ClienteNovoDTO;
+import br.com.aurock.crusobackend.domain.Endereco;
+import br.com.aurock.crusobackend.domain.enuns.TipoCliente;
 import br.com.aurock.crusobackend.repository.ClienteRepository;
+import br.com.aurock.crusobackend.repository.EnderecoRepository;
 import br.com.aurock.crusobackend.service.exceptions.ObjetoNaoEncontradoException;
 import br.com.aurock.crusobackend.service.exceptions.OperacaoNaoPermitidaException;
 import br.com.aurock.crusobackend.service.exceptions.OperacaoNaoRealizadaException;
@@ -14,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +29,9 @@ public class ClienteService {
 
     @Autowired
     private ClienteRepository clienteRepository;
+
+    @Autowired
+    private EnderecoRepository enderecoRepository;
 
     private final Log logClienteService = new Log(this);
 
@@ -65,11 +74,6 @@ public class ClienteService {
         return clienteRepository.findAll(pageRequest);
     }
 
-    public Cliente converteParaCliente(ClienteDTO clienteDTO){
-        Cliente cliente = new Cliente(clienteDTO.getId(),clienteDTO.getNome(),clienteDTO.getEmail(),null,null);
-        return cliente;
-    }
-
     public void deletaClientePorId(Integer id){
         logClienteService.getLogger().info(Mensagens.MSG_SERVICE_DELETA_OBJETO,getClass().getSimpleName(),id);
         obterDadosCliente(id);
@@ -78,5 +82,37 @@ public class ClienteService {
         }catch (DataIntegrityViolationException e){
             throw new OperacaoNaoPermitidaException(Mensagens.MSG_OPERACAO_NAO_PERMITIDA,e.getCause());
         }
+    }
+
+    @Transactional
+    public Cliente criaNovoCliente(Cliente novoCliente){
+        logClienteService.getLogger().info(Mensagens.MSG_SERVICE_CRIA_OBJETO, getClass().getSimpleName());
+        try{
+            clienteRepository.save(novoCliente);
+            enderecoRepository.saveAll(novoCliente.getEnderecos());
+            return novoCliente;
+        }catch (RuntimeException e){
+            throw new OperacaoNaoRealizadaException(Mensagens.MSG_OPERACAO_NAO_REALIZADA,e.getCause());
+        }
+    }
+
+    public Cliente converteClienteDTOParaCliente(ClienteDTO clienteDTO){
+        Cliente cliente = new Cliente(clienteDTO.getId(),clienteDTO.getNome(),clienteDTO.getEmail(),null,null);
+        return cliente;
+    }
+
+    public Cliente converteClienteNovoDTOParaCliente(ClienteNovoDTO clienteNovoDTO){
+        Cliente cliente = new Cliente(null,clienteNovoDTO.getNome(),clienteNovoDTO.getEmail(),clienteNovoDTO.getCpfCnpj(), TipoCliente.toEnum(clienteNovoDTO.getTipoCliente()));
+        Cidade cidade = new Cidade(clienteNovoDTO.getCidadeId(),null,null);
+        Endereco endereco = new Endereco(null,clienteNovoDTO.getLogradouro(),clienteNovoDTO.getNumero(),clienteNovoDTO.getComplemento(), clienteNovoDTO.getBairro(), clienteNovoDTO.getCep(), cliente,cidade);
+        cliente.getEnderecos().add(endereco);
+        cliente.getTelefones().add(clienteNovoDTO.getTelefone1());
+        if(clienteNovoDTO.getTelefone2() != null){
+            cliente.getTelefones().add(clienteNovoDTO.getTelefone2());
+        }
+        if(clienteNovoDTO.getTelefone3() != null){
+            cliente.getTelefones().add(clienteNovoDTO.getTelefone3());
+        }
+        return cliente;
     }
 }

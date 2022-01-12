@@ -2,6 +2,7 @@ package br.com.aurock.crusobackend.resource;
 
 import br.com.aurock.crusobackend.domain.Cliente;
 import br.com.aurock.crusobackend.domain.DTO.ClienteDTO;
+import br.com.aurock.crusobackend.domain.DTO.ClienteNovoDTO;
 import br.com.aurock.crusobackend.service.ClienteService;
 import br.com.aurock.crusobackend.util.Log;
 import br.com.aurock.crusobackend.util.Mensagens;
@@ -9,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,7 +55,7 @@ public class ClienteResource {
     @PutMapping(value = "/{id}")
     public ResponseEntity<Void> atualizaCliente(@PathVariable Integer id, @RequestBody ClienteDTO clienteDTO){
         logResourceCliente.getLogger().info(Mensagens.MSG_REQUISICAO_ATUALIZACAO_OBJETO,getClass().getSimpleName());
-        clienteService.atualizaCliente(id,clienteService.converteParaCliente(clienteDTO));
+        clienteService.atualizaCliente(id,clienteService.converteClienteDTOParaCliente(clienteDTO));
         return ResponseEntity.noContent().build();
     }
 
@@ -60,5 +64,14 @@ public class ClienteResource {
         logResourceCliente.getLogger().info(Mensagens.MSG_SERVICE_DELETA_OBJETO,getClass().getSimpleName());
         clienteService.deletaClientePorId(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> criaNovoCliente(@Valid @RequestBody ClienteNovoDTO clienteNovoDTO){
+        logResourceCliente.getLogger().info(Mensagens.MSG_REQUISICAO_CRIACAO_OBJETO,getClass().getSimpleName());
+        Cliente novoCliente = clienteService.converteClienteNovoDTOParaCliente(clienteNovoDTO);
+        novoCliente = clienteService.criaNovoCliente(novoCliente);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(novoCliente.getId()).toUri();
+        return ResponseEntity.created(uri).build();
     }
 }
