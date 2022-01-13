@@ -29,5 +29,6 @@ public class Mensagens {
     public static final String MSG_LIGACAO_FRASE = " e ";
     public static final String MSG_TAMANHO_STRING_PART2 = " caracteres!";
     public static final String MSG_VALIDACAO_EMAIL = "Email inválido";
+    public static final String MSG_RESULTADO_DELETA = "Resultado da deleção de geristro -> Registro de ID = {} foi deletado ? {}";
 
 }

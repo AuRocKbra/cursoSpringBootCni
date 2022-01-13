@@ -61,7 +61,7 @@ public class ClienteResource {
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deletaCliente(@PathVariable Integer id){
-        logResourceCliente.getLogger().info(Mensagens.MSG_SERVICE_DELETA_OBJETO,getClass().getSimpleName());
+        logResourceCliente.getLogger().info(Mensagens.MSG_REQUISICAO_DELETE_OBJETO,getClass().getSimpleName());
         clienteService.deletaClientePorId(id);
         return ResponseEntity.noContent().build();
     }

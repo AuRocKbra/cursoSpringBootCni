@@ -64,7 +64,9 @@ public class CategoriaService {
         buscarCategoria(id);
         try {
             categoriaRepository.deleteById(id);
+            logCategoriaService.getLogger().info(Mensagens.MSG_RESULTADO_DELETA,id,true);
         }catch (DataIntegrityViolationException e){
+            logCategoriaService.getLogger().info(Mensagens.MSG_RESULTADO_DELETA,id,false);
             throw new OperacaoNaoPermitidaException(Mensagens.MSG_OPERACAO_NAO_PERMITIDA,e.getCause());
         }
     }
