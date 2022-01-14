@@ -1,9 +1,13 @@
 package br.com.aurock.crusobackend.domain.DTO;
 
+import br.com.aurock.crusobackend.util.Mensagens;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
 @NoArgsConstructor
@@ -13,17 +17,33 @@ public class ClienteNovoDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @NotEmpty(message = Mensagens.MSG_CAMPO_VAZIO)
+    @Length(min=5,max=180, message = Mensagens.MSG_TAMANHO_STRING_PART1+5+Mensagens.MSG_LIGACAO_FRASE+180+Mensagens.MSG_TAMANHO_STRING_PART2)
     private String nome;
+
+    @NotEmpty(message = Mensagens.MSG_CAMPO_VAZIO)
+    @Email(message = Mensagens.MSG_VALIDACAO_EMAIL)
     private String email;
+
+    @NotEmpty(message = Mensagens.MSG_CAMPO_VAZIO)
     private String cpfCnpj;
+
     private Integer tipoCliente;
 
+    @NotEmpty(message = Mensagens.MSG_CAMPO_VAZIO)
     private String logradouro;
+
+    @NotEmpty(message = Mensagens.MSG_CAMPO_VAZIO)
     private String numero;
+
     private String complemento;
+
     private String bairro;
+
+    @NotEmpty(message = Mensagens.MSG_CAMPO_VAZIO)
     private String cep;
 
+    @NotEmpty(message = Mensagens.MSG_CAMPO_VAZIO)
     private String telefone1;
     private String telefone2;
     private String telefone3;
