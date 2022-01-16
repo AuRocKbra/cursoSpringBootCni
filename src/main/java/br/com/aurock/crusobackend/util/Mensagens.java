@@ -30,5 +30,7 @@ public class Mensagens {
     public static final String MSG_TAMANHO_STRING_PART2 = " caracteres!";
     public static final String MSG_VALIDACAO_EMAIL = "Email inválido";
     public static final String MSG_RESULTADO_DELETA = "Resultado da deleção de geristro -> Registro de ID = {} foi deletado ? {}";
+    public static final String MSG_VALIDACAO_DADOS = "Processo de validação iniciado em {} -> Valor analisado {}";
+    public static final String MSG_VALIDACAO_RESULTADO = "Resultado do processo de validação em {} -> Valor {} é válido ? {}";
 
 }
