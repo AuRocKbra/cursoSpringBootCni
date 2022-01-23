@@ -2,8 +2,8 @@ package br.com.aurock.crusobackend.service;
 
 import br.com.aurock.crusobackend.domain.Cidade;
 import br.com.aurock.crusobackend.domain.Cliente;
-import br.com.aurock.crusobackend.domain.DTO.ClienteDTO;
-import br.com.aurock.crusobackend.domain.DTO.ClienteNovoDTO;
+import br.com.aurock.crusobackend.domain.dto.ClienteDTO;
+import br.com.aurock.crusobackend.domain.dto.ClienteNovoDTO;
 import br.com.aurock.crusobackend.domain.Endereco;
 import br.com.aurock.crusobackend.domain.enuns.TipoCliente;
 import br.com.aurock.crusobackend.repository.ClienteRepository;

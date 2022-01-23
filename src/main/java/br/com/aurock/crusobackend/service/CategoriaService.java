@@ -1,7 +1,7 @@
 package br.com.aurock.crusobackend.service;
 
 import br.com.aurock.crusobackend.domain.Categoria;
-import br.com.aurock.crusobackend.domain.DTO.CategoriaDTO;
+import br.com.aurock.crusobackend.domain.dto.CategoriaDTO;
 import br.com.aurock.crusobackend.repository.CategoriaRepository;
 import br.com.aurock.crusobackend.service.exceptions.ObjetoNaoEncontradoException;
 import br.com.aurock.crusobackend.service.exceptions.OperacaoNaoPermitidaException;
@@ -15,7 +15,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

@@ -1,8 +1,8 @@
 package br.com.aurock.crusobackend.resource;
 
 import br.com.aurock.crusobackend.domain.Cliente;
-import br.com.aurock.crusobackend.domain.DTO.ClienteDTO;
-import br.com.aurock.crusobackend.domain.DTO.ClienteNovoDTO;
+import br.com.aurock.crusobackend.domain.dto.ClienteDTO;
+import br.com.aurock.crusobackend.domain.dto.ClienteNovoDTO;
 import br.com.aurock.crusobackend.service.ClienteService;
 import br.com.aurock.crusobackend.util.Log;
 import br.com.aurock.crusobackend.util.Mensagens;
@@ -53,9 +53,10 @@ public class ClienteResource {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Void> atualizaCliente(@PathVariable Integer id, @RequestBody ClienteDTO clienteDTO){
+    public ResponseEntity<Void> atualizaCliente(@PathVariable Integer id, @Valid @RequestBody ClienteDTO clienteDTO){
         logResourceCliente.getLogger().info(Mensagens.MSG_REQUISICAO_ATUALIZACAO_OBJETO,getClass().getSimpleName());
-        clienteService.atualizaCliente(id,clienteService.converteClienteDTOParaCliente(clienteDTO));
+        Cliente cliente = clienteService.converteClienteDTOParaCliente(clienteDTO);
+        clienteService.atualizaCliente(id,cliente);
         return ResponseEntity.noContent().build();
     }
 
