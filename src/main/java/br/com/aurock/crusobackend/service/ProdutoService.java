@@ -38,6 +38,6 @@ public class ProdutoService {
         loggerProdutoService.getLogger().info(Mensagens.MSG_SERVICE_LISTAR_PAGINADA_OBJETO,getClass().getSimpleName());
         PageRequest pageRequest = PageRequest.of(pagina,linhasPorPagina, Sort.Direction.valueOf(ordem),ordenadoPor);
         List<Categoria> categorias = categoriaRepository.findAllById(idsCategorias);
-        return produtoRepository.listaProdutoPaginadaComCategoria(nome,categorias, pageRequest);
+        return produtoRepository.findDistinctByNomeContainingAndCategoriasIn(nome,categorias, pageRequest);
     }
 }

@@ -21,7 +21,7 @@ public class ProdutoResource {
     @Autowired
     private ProdutoService produtoService;
 
-    private Log loggerProdutoResource = new Log(this);
+    private final Log loggerProdutoResource = new Log(this);
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<Produto> buscaProdutoPorId(@PathVariable Integer id){
@@ -39,8 +39,9 @@ public class ProdutoResource {
         @RequestParam(value = "ordem",defaultValue = "ASC")String ordem
     ){
         loggerProdutoResource.getLogger().info(Mensagens.MSG_REQUISICAO_LISTAGEM_PAGINADA,getClass().getSimpleName());
-        List<Integer> listaIdsCategoria = Conversor.ConverteStringParaInteger(categorias);
-        Page<Produto> produtos = produtoService.listaProdutoPaginadaComCategoria(nome,listaIdsCategoria,pagina,linhasPorPagina,ordenadoPor, ordem);
+        List<Integer> listaIdsCategoria = Conversor.converteStringParaInteger(categorias);
+        String nomeDecode = Conversor.decodificaString(nome);
+        Page<Produto> produtos = produtoService.listaProdutoPaginadaComCategoria(nomeDecode,listaIdsCategoria,pagina,linhasPorPagina,ordenadoPor, ordem);
         Page<ProdutoDTO> produtoDTOS = produtos.map(obj->new ProdutoDTO(obj.getId(),obj.getNome(),obj.getPreco()));
         return ResponseEntity.ok().body(produtoDTOS);
     }
