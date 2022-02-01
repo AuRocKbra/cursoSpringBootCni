@@ -2,7 +2,6 @@ package br.com.aurock.crusobackend.domain;
 
 import br.com.aurock.crusobackend.domain.enuns.TipoCliente;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,11 +22,14 @@ public class Cliente implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
+
+    @Column(unique = true)
     private String email;
     private String cpfCnpj;
     private Integer tipoCliente;
 
-    @OneToMany(mappedBy = "cliente")
+
+    @OneToMany(mappedBy = "cliente",cascade = CascadeType.ALL)
     private List<Endereco> enderecos = new ArrayList<>();
 
     @ElementCollection

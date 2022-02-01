@@ -1,7 +1,7 @@
 package br.com.aurock.crusobackend.service;
 
 import br.com.aurock.crusobackend.domain.Categoria;
-import br.com.aurock.crusobackend.domain.DTO.CategoriaDTO;
+import br.com.aurock.crusobackend.domain.dto.CategoriaDTO;
 import br.com.aurock.crusobackend.repository.CategoriaRepository;
 import br.com.aurock.crusobackend.service.exceptions.ObjetoNaoEncontradoException;
 import br.com.aurock.crusobackend.service.exceptions.OperacaoNaoPermitidaException;
@@ -15,7 +15,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,7 +63,9 @@ public class CategoriaService {
         buscarCategoria(id);
         try {
             categoriaRepository.deleteById(id);
+            logCategoriaService.getLogger().info(Mensagens.MSG_RESULTADO_DELETA,id,true);
         }catch (DataIntegrityViolationException e){
+            logCategoriaService.getLogger().info(Mensagens.MSG_RESULTADO_DELETA,id,false);
             throw new OperacaoNaoPermitidaException(Mensagens.MSG_OPERACAO_NAO_PERMITIDA,e.getCause());
         }
     }

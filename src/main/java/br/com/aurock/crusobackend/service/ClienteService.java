@@ -2,8 +2,8 @@ package br.com.aurock.crusobackend.service;
 
 import br.com.aurock.crusobackend.domain.Cidade;
 import br.com.aurock.crusobackend.domain.Cliente;
-import br.com.aurock.crusobackend.domain.DTO.ClienteDTO;
-import br.com.aurock.crusobackend.domain.DTO.ClienteNovoDTO;
+import br.com.aurock.crusobackend.domain.dto.ClienteDTO;
+import br.com.aurock.crusobackend.domain.dto.ClienteNovoDTO;
 import br.com.aurock.crusobackend.domain.Endereco;
 import br.com.aurock.crusobackend.domain.enuns.TipoCliente;
 import br.com.aurock.crusobackend.repository.ClienteRepository;
@@ -79,7 +79,9 @@ public class ClienteService {
         obterDadosCliente(id);
         try{
             clienteRepository.deleteById(id);
+            logClienteService.getLogger().info(Mensagens.MSG_RESULTADO_DELETA,id,true);
         }catch (DataIntegrityViolationException e){
+            logClienteService.getLogger().info(Mensagens.MSG_RESULTADO_DELETA,id,false);
             throw new OperacaoNaoPermitidaException(Mensagens.MSG_OPERACAO_NAO_PERMITIDA,e.getCause());
         }
     }
@@ -90,6 +92,7 @@ public class ClienteService {
         try{
             clienteRepository.save(novoCliente);
             enderecoRepository.saveAll(novoCliente.getEnderecos());
+            logClienteService.getLogger().info(Mensagens.MSG_SERVICE_CRIA_OBJETO_RESULTADO,novoCliente.getClass().getSimpleName(),true);
             return novoCliente;
         }catch (RuntimeException e){
             throw new OperacaoNaoRealizadaException(Mensagens.MSG_OPERACAO_NAO_REALIZADA,e.getCause());
@@ -97,8 +100,7 @@ public class ClienteService {
     }
 
     public Cliente converteClienteDTOParaCliente(ClienteDTO clienteDTO){
-        Cliente cliente = new Cliente(clienteDTO.getId(),clienteDTO.getNome(),clienteDTO.getEmail(),null,null);
-        return cliente;
+        return new Cliente(clienteDTO.getId(),clienteDTO.getNome(),clienteDTO.getEmail(),null,null);
     }
 
     public Cliente converteClienteNovoDTOParaCliente(ClienteNovoDTO clienteNovoDTO){

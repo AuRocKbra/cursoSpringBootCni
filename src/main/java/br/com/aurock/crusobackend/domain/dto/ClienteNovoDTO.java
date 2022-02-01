@@ -1,6 +1,7 @@
-package br.com.aurock.crusobackend.domain.DTO;
+package br.com.aurock.crusobackend.domain.dto;
 
 import br.com.aurock.crusobackend.util.Mensagens;
+import br.com.aurock.crusobackend.service.validacao.ClienteInsert;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Getter
 @Setter
+@ClienteInsert
 public class ClienteNovoDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;

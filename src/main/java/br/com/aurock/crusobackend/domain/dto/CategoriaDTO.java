@@ -1,4 +1,4 @@
-package br.com.aurock.crusobackend.domain.DTO;
+package br.com.aurock.crusobackend.domain.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

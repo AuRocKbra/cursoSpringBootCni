@@ -1,22 +1,18 @@
 package br.com.aurock.crusobackend.resource;
 
 import br.com.aurock.crusobackend.domain.Categoria;
-import br.com.aurock.crusobackend.domain.DTO.CategoriaDTO;
+import br.com.aurock.crusobackend.domain.dto.CategoriaDTO;
 import br.com.aurock.crusobackend.service.CategoriaService;
 import br.com.aurock.crusobackend.util.Log;
 import br.com.aurock.crusobackend.util.Mensagens;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.Valid;
-import java.net.PortUnreachableException;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
