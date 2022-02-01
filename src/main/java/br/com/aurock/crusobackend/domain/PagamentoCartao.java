@@ -1,6 +1,7 @@
 package br.com.aurock.crusobackend.domain;
 
 import br.com.aurock.crusobackend.domain.enuns.EstadoPagamento;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 @Getter
 @Setter
+@JsonTypeName("pagamentoComCartao")
 public class PagamentoCartao extends Pagamento{
 
     private static final Long serialVersionUID = 1l;

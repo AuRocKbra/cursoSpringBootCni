@@ -55,4 +55,16 @@ public class ItemPedido implements Serializable {
     public int hashCode() {
         return Objects.hash(itemPedidoPK);
     }
+
+    public double getSubTotal(){
+        return (preco - desconto) - quantidade;
+    }
+
+    public void setPedido(Pedido pedido){
+        this.itemPedidoPK.setPedido(pedido);
+    }
+
+    public void setProduto(Produto produto){
+        this.itemPedidoPK.setProduto(produto);
+    }
 }
