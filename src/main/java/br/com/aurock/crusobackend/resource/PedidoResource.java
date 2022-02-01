@@ -30,7 +30,7 @@ public class PedidoResource {
     public ResponseEntity<Pedido> criaPedido(@RequestBody Pedido novoPedido){
         logPedidoResource.getLogger().info(Mensagens.MSG_REQUISICAO_CRIACAO_OBJETO,getClass().getSimpleName());
         novoPedido = pedidoService.criaPedido(novoPedido);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(novoPedido).toUri();
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(novoPedido.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 }

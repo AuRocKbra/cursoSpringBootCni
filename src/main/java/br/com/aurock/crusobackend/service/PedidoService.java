@@ -1,8 +1,10 @@
 package br.com.aurock.crusobackend.service;
 
+import br.com.aurock.crusobackend.domain.ItemPedido;
 import br.com.aurock.crusobackend.domain.PagamentoBoleto;
 import br.com.aurock.crusobackend.domain.Pedido;
 import br.com.aurock.crusobackend.domain.enuns.EstadoPagamento;
+import br.com.aurock.crusobackend.repository.ItemPedidoRepository;
 import br.com.aurock.crusobackend.repository.PedidoRepository;
 import br.com.aurock.crusobackend.service.exceptions.ObjetoNaoEncontradoException;
 import br.com.aurock.crusobackend.util.Log;
@@ -21,6 +23,12 @@ public class PedidoService {
 
     @Autowired
     private BoletoService boletoService;
+
+    @Autowired
+    private ProdutoService produtoService;
+
+    @Autowired
+    private ItemPedidoRepository itemPedidoRepository;
 
     private final Log logPedidoService = new Log(this);
 
@@ -42,6 +50,13 @@ public class PedidoService {
             boletoService.criaBoleto(pagamentoBoleto,novoPedido.getInstante());
         }
         novoPedido = pedidoRepository.save(novoPedido);
-        
+        for(ItemPedido item : novoPedido.getItens()){
+            item.setDesconto(item.getDesconto() != null ? item.getDesconto() : 0.0 );
+            item.setPreco(produtoService.obterProdutoPorId(item.getProduto().getId()).getPreco());
+            item.setPedido(novoPedido);
+        }
+        itemPedidoRepository.saveAll(novoPedido.getItens());
+        logPedidoService.getLogger().info(Mensagens.MSG_SERVICE_CRIA_OBJETO_RESULTADO,novoPedido,true);
+        return novoPedido;
     }
 }
