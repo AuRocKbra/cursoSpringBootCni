@@ -7,10 +7,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @NoArgsConstructor
 @Entity
@@ -66,5 +65,28 @@ public class Pedido implements Serializable {
             soma += item.getSubTotal();
         }
         return soma;
+    }
+
+    @Override
+    public String toString(){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:MM:ss");
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("pt","BR"));
+        StringBuilder builder = new StringBuilder();
+        builder.append("Pedido de número:");
+        builder.append(getId());
+        builder.append("\nData de realização do pedido: ");
+        builder.append(sdf.format(getInstante()));
+        builder.append("\nCliente:\n");
+        builder.append(getCliente().getNome());
+        builder.append("\nSituação do pagamento: ");
+        builder.append(getPagamento().getEstadoPagamento().getDescricao());
+        builder.append("\nItens do pedido:");
+        for(ItemPedido item : getItens()){
+            builder.append("\n");
+            builder.append(item.toString());
+        }
+        builder.append("\nValor total do pedido: ");
+        builder.append(numberFormat.format(getValorTotal()));
+        return builder.toString();
     }
 }

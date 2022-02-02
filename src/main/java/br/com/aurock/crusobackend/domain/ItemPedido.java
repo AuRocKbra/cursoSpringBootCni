@@ -8,6 +8,8 @@ import lombok.Setter;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.Objects;
 
 @NoArgsConstructor
@@ -66,5 +68,20 @@ public class ItemPedido implements Serializable {
 
     public void setProduto(Produto produto){
         this.itemPedidoPK.setProduto(produto);
+    }
+
+    @Override
+    public String toString() {
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("pt","BR"));
+        StringBuilder builder = new StringBuilder();
+        builder.append(getProduto().getNome());
+        builder.append(":\n");
+        builder.append("Qtd: ");
+        builder.append(this.quantidade);
+        builder.append(", preço:");
+        builder.append(numberFormat.format(this.preco));
+        builder.append(", subtotal: ");
+        builder.append(numberFormat.format(getSubTotal()));
+        return builder.toString();
     }
 }

@@ -11,6 +11,7 @@ import br.com.aurock.crusobackend.util.Log;
 import br.com.aurock.crusobackend.util.Mensagens;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.Optional;
@@ -30,6 +31,9 @@ public class PedidoService {
     @Autowired
     private ItemPedidoRepository itemPedidoRepository;
 
+    @Autowired
+    private ClienteService clienteService;
+
     private final Log logPedidoService = new Log(this);
 
     public Pedido obterDadosPedidoPorId(Integer id){
@@ -39,10 +43,12 @@ public class PedidoService {
         return pedido.orElseThrow(()->new ObjetoNaoEncontradoException(Mensagens.MSG_OBJECTO_NAO_ENCONTRADO));
     }
 
+    @Transactional
     public Pedido criaPedido( Pedido novoPedido){
         logPedidoService.getLogger().info(Mensagens.MSG_SERVICE_CRIA_OBJETO,getClass().getSimpleName());
         novoPedido.setId(null);
         novoPedido.setInstante(new Date());
+        novoPedido.setCliente(clienteService.obterDadosCliente(novoPedido.getCliente().getId()));
         novoPedido.getPagamento().setEstadoPagamento(EstadoPagamento.PENDENTE);
         novoPedido.getPagamento().setPedido(novoPedido);
         if(novoPedido.getPagamento() instanceof PagamentoBoleto){
@@ -51,12 +57,14 @@ public class PedidoService {
         }
         novoPedido = pedidoRepository.save(novoPedido);
         for(ItemPedido item : novoPedido.getItens()){
+            item.setProduto(produtoService.obterProdutoPorId(item.getProduto().getId()));
             item.setDesconto(item.getDesconto() != null ? item.getDesconto() : 0.0 );
-            item.setPreco(produtoService.obterProdutoPorId(item.getProduto().getId()).getPreco());
+            item.setPreco(item.getProduto().getPreco());
             item.setPedido(novoPedido);
         }
         itemPedidoRepository.saveAll(novoPedido.getItens());
         logPedidoService.getLogger().info(Mensagens.MSG_SERVICE_CRIA_OBJETO_RESULTADO,novoPedido,true);
+        System.out.println(novoPedido);
         return novoPedido;
     }
 }
