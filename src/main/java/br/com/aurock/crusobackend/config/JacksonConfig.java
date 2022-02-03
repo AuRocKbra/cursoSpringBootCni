@@ -2,6 +2,8 @@ package br.com.aurock.crusobackend.config;
 
 import br.com.aurock.crusobackend.domain.PagamentoBoleto;
 import br.com.aurock.crusobackend.domain.PagamentoCartao;
+import br.com.aurock.crusobackend.service.EmailService;
+import br.com.aurock.crusobackend.service.MockMailService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,5 +22,10 @@ public class JacksonConfig {
           };
         };
         return builder;
+    }
+
+    @Bean
+    public EmailService emailService(){
+        return new MockMailService();
     }
 }

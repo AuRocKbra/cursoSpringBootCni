@@ -34,6 +34,9 @@ public class PedidoService {
     @Autowired
     private ClienteService clienteService;
 
+    @Autowired
+    private EmailService emailService;
+
     private final Log logPedidoService = new Log(this);
 
     public Pedido obterDadosPedidoPorId(Integer id){
@@ -64,7 +67,7 @@ public class PedidoService {
         }
         itemPedidoRepository.saveAll(novoPedido.getItens());
         logPedidoService.getLogger().info(Mensagens.MSG_SERVICE_CRIA_OBJETO_RESULTADO,novoPedido,true);
-        System.out.println(novoPedido);
+        emailService.enviaEmailConfirmacaoPedido(novoPedido);
         return novoPedido;
     }
 }
