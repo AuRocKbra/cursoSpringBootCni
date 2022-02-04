@@ -1,5 +1,6 @@
 package br.com.aurock.crusobackend.repository.handler;
 
+import br.com.aurock.crusobackend.service.exceptions.EmailNaoEnviadoException;
 import br.com.aurock.crusobackend.service.exceptions.ObjetoNaoEncontradoException;
 import br.com.aurock.crusobackend.service.exceptions.OperacaoNaoPermitidaException;
 import br.com.aurock.crusobackend.service.exceptions.OperacaoNaoRealizadaException;
@@ -41,5 +42,11 @@ public class ResourceExceptionHandler {
             erro.setErros(er.getField(),er.getDefaultMessage());
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+    }
+
+    @ExceptionHandler(EmailNaoEnviadoException.class)
+    public ResponseEntity<ObjetoErro> emailNaoEnviadoException(EmailNaoEnviadoException e, HttpServletRequest request){
+        ObjetoErro erro = new ObjetoErro(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage(),System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(erro);
     }
 }
