@@ -89,7 +89,6 @@ public class CategoriaService {
     }
 
     public Categoria converterParaCategoria(CategoriaDTO categoriaDTO){
-        Categoria categoria = new Categoria(categoriaDTO.getId(),categoriaDTO.getNome());
-        return categoria;
+        return new Categoria(categoriaDTO.getId(),categoriaDTO.getNome());
     }
 }

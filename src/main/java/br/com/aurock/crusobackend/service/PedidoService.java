@@ -67,7 +67,7 @@ public class PedidoService {
         }
         itemPedidoRepository.saveAll(novoPedido.getItens());
         logPedidoService.getLogger().info(Mensagens.MSG_SERVICE_CRIA_OBJETO_RESULTADO,novoPedido,true);
-        emailService.enviaEmailConfirmacaoPedido(novoPedido);
+        emailService.enviaEmailHtmlConfirmacaoPedido(novoPedido);
         return novoPedido;
     }
 }

@@ -33,5 +33,6 @@ public class Mensagens {
     public static final String MSG_VALIDACAO_DADOS = "Processo de validação iniciado em {} -> Valor analisado {}";
     public static final String MSG_VALIDACAO_RESULTADO = "Resultado do processo de validação em {} -> Valor {} é válido ? {}";
     public static final String MSG_ERRO_ENVIO_EMAIL = "Falha ao enviar email de confirmação de pedido!";
+    public static final String MSG_TITULO_EMAIL_CONFIRMACAO_PEDIDO = "Confirmação do pedido de número ";
 
 }
