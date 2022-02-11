@@ -2,6 +2,7 @@ package br.com.aurock.crusobackend;
 
 import br.com.aurock.crusobackend.domain.*;
 import br.com.aurock.crusobackend.domain.enuns.EstadoPagamento;
+import br.com.aurock.crusobackend.domain.enuns.Perfil;
 import br.com.aurock.crusobackend.domain.enuns.TipoCliente;
 import br.com.aurock.crusobackend.repository.*;
 import net.bytebuddy.implementation.auxiliary.AuxiliaryType;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -44,6 +46,9 @@ public class CursoBackEndApplication implements CommandLineRunner {
 
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
+
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursoBackEndApplication.class, args);
@@ -104,11 +109,15 @@ public class CursoBackEndApplication implements CommandLineRunner {
 		Cidade c2 = new Cidade(null,"São Paulo",e2);
 		Cidade c3 = new Cidade(null,"Campinas",e2);
 
-		Cliente cl1 = new Cliente(null,"Maria Silva", "maria@gmail.com","36378912377", TipoCliente.PESSOAFISICA);
+		Cliente cl1 = new Cliente(null,"Maria Silva", "maria@gmail.com","36378912377", TipoCliente.PESSOAFISICA, bCryptPasswordEncoder.encode("123456"));
+		Cliente cl2 = new Cliente(null,"Mario Costa", "mario@gmail.com","63981896041", TipoCliente.PESSOAFISICA, bCryptPasswordEncoder.encode("123456"));
+		cl2.addPerfis(Perfil.ADMIN);
 		cl1.getTelefones().addAll(Arrays.asList("2736323","93838393"));
+		cl2.getTelefones().addAll(Arrays.asList("12312321","523242323"));
 
 		Endereco end1 = new Endereco(null,"Rua Flores","300","Apto 203","Jardim","38220834",cl1,c1);
 		Endereco end2 = new Endereco(null,"Avenida Matos","105","Sala 800","Centro","38777012",cl1,c2);
+		Endereco end3 = new Endereco(null,"Avenida Matos","104",null,"Centro","38777012",cl2,c2);
 
 		Pedido ped1 = new Pedido(null,sdf.parse("30/09/2017 10:32"),cl1,end1);
 		Pedido ped2 = new Pedido(null,sdf.parse("10/10/2017 19:35"),cl1,end2);
@@ -135,8 +144,8 @@ public class CursoBackEndApplication implements CommandLineRunner {
 		produtoRepository.saveAll(Arrays.asList(p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11));
 		estadoRepository.saveAll(Arrays.asList(e1,e2));
 		cidadeRepository.saveAll(Arrays.asList(c1,c2,c3));
-		clienteRepository.save(cl1);
-		enderecoRepository.saveAll(Arrays.asList(end1,end2));
+		clienteRepository.saveAll(Arrays.asList(cl1,cl2));
+		enderecoRepository.saveAll(Arrays.asList(end1,end2,end3));
 		pedidoRepository.saveAll(Arrays.asList(ped1,ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pag1,pag2));
 		itemPedidoRepository.saveAll(Arrays.asList(item1,item2,item3));

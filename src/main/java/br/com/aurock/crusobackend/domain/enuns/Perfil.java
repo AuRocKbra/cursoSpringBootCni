@@ -8,23 +8,23 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public enum TipoCliente {
+public enum Perfil {
 
-    PESSOAFISICA(1,"Pessoa física"),
-    PESSOAJURIDICA(2,"Pessoa jurídica");
+    ADMIN(1,"ROLE_ADMIN"),
+    CLIENTE(2,"ROLE_CLIENTE");
 
     private int cod;
     private String descricao;
 
-    public static TipoCliente toEnum(Integer cod){
+    public static Perfil toEnum(Integer cod){
         if(cod == null){
             return null;
         }
-        for(TipoCliente x : TipoCliente.values()){
+        for(Perfil x : Perfil.values()){
             if(cod.equals(x.getCod())){
                 return x;
             }
         }
-        throw  new IllegalArgumentException(Mensagens.MSG_ARGUMENTO_INVALIDO.replace("{}","tipo cliente"));
+        throw new IllegalArgumentException(Mensagens.MSG_ARGUMENTO_INVALIDO.replace("{}","perfil"));
     }
 }

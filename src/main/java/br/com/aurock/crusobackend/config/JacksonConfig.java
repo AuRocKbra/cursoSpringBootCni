@@ -15,14 +15,13 @@ public class JacksonConfig {
 
     @Bean
     public Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder(){
-        Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder(){
+        return new Jackson2ObjectMapperBuilder(){
           public void configure(ObjectMapper objectMapper){
               objectMapper.registerSubtypes(PagamentoCartao.class);
               objectMapper.registerSubtypes(PagamentoBoleto.class);
               super.configure(objectMapper);
           };
         };
-        return builder;
     }
 
     @Bean
