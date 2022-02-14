@@ -36,5 +36,6 @@ public class Mensagens {
     public static final String MSG_TITULO_EMAIL_CONFIRMACAO_PEDIDO = "Confirmação do pedido de número ";
     public static final String MSG_ARGUMENTO_INVALIDO = "Argumento inválido em {}";
     public static final String MSG_OBJETO_NAO_ENCONTRADO = "{} não foi encontrado!";
+    public static final String MSG_ERRO_AUTENTICACAO = "Houve um erro no processo de autenticação";
 
 }

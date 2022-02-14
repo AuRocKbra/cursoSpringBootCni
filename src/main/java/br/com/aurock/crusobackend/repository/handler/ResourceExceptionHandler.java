@@ -1,5 +1,6 @@
 package br.com.aurock.crusobackend.repository.handler;
 
+import br.com.aurock.crusobackend.security.exceptions.FalhaNoProcessoDeAutenticacao;
 import br.com.aurock.crusobackend.service.exceptions.EmailNaoEnviadoException;
 import br.com.aurock.crusobackend.service.exceptions.ObjetoNaoEncontradoException;
 import br.com.aurock.crusobackend.service.exceptions.OperacaoNaoPermitidaException;
@@ -48,5 +49,11 @@ public class ResourceExceptionHandler {
     public ResponseEntity<ObjetoErro> emailNaoEnviadoException(EmailNaoEnviadoException e, HttpServletRequest request){
         ObjetoErro erro = new ObjetoErro(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage(),System.currentTimeMillis());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(erro);
+    }
+
+    @ExceptionHandler(FalhaNoProcessoDeAutenticacao.class)
+    public ResponseEntity<ObjetoErro> falhaNoProcessoDeAutenticacao(FalhaNoProcessoDeAutenticacao e, HttpServletRequest request){
+        ObjetoErro erro = new ObjetoErro(HttpStatus.UNAUTHORIZED.value(), e.getMessage(),System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(erro);
     }
 }
