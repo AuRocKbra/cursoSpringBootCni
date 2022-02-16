@@ -1,6 +1,7 @@
 package br.com.aurock.crusobackend.config;
 
 import br.com.aurock.crusobackend.security.JWTAuthenticationFilter;
+import br.com.aurock.crusobackend.security.JWTAuthorizationFilter;
 import br.com.aurock.crusobackend.security.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -42,6 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.headers().frameOptions().disable();
         httpSecurity.cors().and().csrf().disable();
         httpSecurity.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+        httpSecurity.addFilter(new JWTAuthorizationFilter(authenticationManager(),jwtUtil,userDetailsService));
         httpSecurity.authorizeRequests().antMatchers(HttpMethod.GET,PUBLIC_MATCHERS_GET).permitAll().antMatchers(PUBLIC_MATCHERS).permitAll().anyRequest().authenticated();
         httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
