@@ -9,6 +9,7 @@ import br.com.aurock.crusobackend.util.Mensagens;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -32,6 +33,7 @@ public class ClienteResource {
         return ResponseEntity.ok().body(clienteService.obterDadosCliente(id));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<ClienteDTO>> listarClientes(){
         logResourceCliente.getLogger().info(Mensagens.MSG_REQUISICAO_LISTAGEM,getClass().getSimpleName());
@@ -40,6 +42,7 @@ public class ClienteResource {
         return ResponseEntity.ok().body(clienteDTOS);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping(value = "/page")
     public ResponseEntity<Page<ClienteDTO>> listarClientesPaginado(
             @RequestParam(value = "pagina", defaultValue = "0") Integer pagina,
@@ -60,6 +63,7 @@ public class ClienteResource {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deletaCliente(@PathVariable Integer id){
         logResourceCliente.getLogger().info(Mensagens.MSG_REQUISICAO_DELETE_OBJETO,getClass().getSimpleName());
