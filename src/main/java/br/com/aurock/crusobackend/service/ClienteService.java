@@ -5,10 +5,13 @@ import br.com.aurock.crusobackend.domain.Cliente;
 import br.com.aurock.crusobackend.domain.dto.ClienteDTO;
 import br.com.aurock.crusobackend.domain.dto.ClienteNovoDTO;
 import br.com.aurock.crusobackend.domain.Endereco;
+import br.com.aurock.crusobackend.domain.enuns.Perfil;
 import br.com.aurock.crusobackend.domain.enuns.TipoCliente;
 import br.com.aurock.crusobackend.repository.ClienteRepository;
 import br.com.aurock.crusobackend.repository.EnderecoRepository;
+import br.com.aurock.crusobackend.security.UsuarioSS;
 import br.com.aurock.crusobackend.service.exceptions.ObjetoNaoEncontradoException;
+import br.com.aurock.crusobackend.service.exceptions.OperacaoNaoAutorizadaException;
 import br.com.aurock.crusobackend.service.exceptions.OperacaoNaoPermitidaException;
 import br.com.aurock.crusobackend.service.exceptions.OperacaoNaoRealizadaException;
 import br.com.aurock.crusobackend.util.Log;
@@ -41,6 +44,12 @@ public class ClienteService {
 
     public Cliente obterDadosCliente(Integer id){
         logClienteService.getLogger().info(Mensagens.MSG_SERVICE_BUSCA_ID,getClass().getSimpleName(),id);
+        logClienteService.getLogger().info(Mensagens.MSG_VALIDACAO_USUARIO);
+        UsuarioSS usuarioSS = UserService.obterUsuarioLogado();
+        if(usuarioSS == null || !usuarioSS.validaPerfil(Perfil.ADMIN) && !id.equals(usuarioSS.getId())){
+            logClienteService.getLogger().info(Mensagens.MSG_USUARIO_NAO_LOGADO);
+            throw new OperacaoNaoAutorizadaException("Acesso negado!");
+        }
         Optional<Cliente> cliente = clienteRepository.findById(id);
         logClienteService.getLogger().info(Mensagens.MSG_RESULTADO_BUSCA_ID,id,cliente.isPresent());
         return cliente.orElseThrow(()->new ObjetoNaoEncontradoException(Mensagens.MSG_OBJECTO_NAO_ENCONTRADO,null));

@@ -1,10 +1,7 @@
 package br.com.aurock.crusobackend.repository.handler;
 
 import br.com.aurock.crusobackend.security.exceptions.FalhaNoProcessoDeAutenticacao;
-import br.com.aurock.crusobackend.service.exceptions.EmailNaoEnviadoException;
-import br.com.aurock.crusobackend.service.exceptions.ObjetoNaoEncontradoException;
-import br.com.aurock.crusobackend.service.exceptions.OperacaoNaoPermitidaException;
-import br.com.aurock.crusobackend.service.exceptions.OperacaoNaoRealizadaException;
+import br.com.aurock.crusobackend.service.exceptions.*;
 import br.com.aurock.crusobackend.util.Mensagens;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,5 +52,11 @@ public class ResourceExceptionHandler {
     public ResponseEntity<ObjetoErro> falhaNoProcessoDeAutenticacao(FalhaNoProcessoDeAutenticacao e, HttpServletRequest request){
         ObjetoErro erro = new ObjetoErro(HttpStatus.UNAUTHORIZED.value(), e.getMessage(),System.currentTimeMillis());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(erro);
+    }
+
+    @ExceptionHandler(OperacaoNaoAutorizadaException.class)
+    public ResponseEntity<ObjetoErro> operacaoNaoAutorizada(OperacaoNaoAutorizadaException e, HttpServletRequest request){
+        ObjetoErro erro = new ObjetoErro(HttpStatus.FORBIDDEN.value(), e.getMessage(), System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(erro);
     }
 }

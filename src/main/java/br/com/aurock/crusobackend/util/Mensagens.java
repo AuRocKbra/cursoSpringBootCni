@@ -37,5 +37,7 @@ public class Mensagens {
     public static final String MSG_ARGUMENTO_INVALIDO = "Argumento inválido em {}";
     public static final String MSG_OBJETO_NAO_ENCONTRADO = "{} não foi encontrado!";
     public static final String MSG_ERRO_AUTENTICACAO = "Houve um erro no processo de autenticação";
+    public static final String MSG_VALIDACAO_USUARIO = "Verificando se o usuário está logado!";
+    public static final String MSG_USUARIO_NAO_LOGADO = "A requisição foi feita por um usuário não logado!";
 
 }

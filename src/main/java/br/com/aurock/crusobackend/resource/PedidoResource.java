@@ -5,6 +5,7 @@ import br.com.aurock.crusobackend.service.PedidoService;
 import br.com.aurock.crusobackend.util.Log;
 import br.com.aurock.crusobackend.util.Mensagens;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -32,5 +33,16 @@ public class PedidoResource {
         novoPedido = pedidoService.criaPedido(novoPedido);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(novoPedido.getId()).toUri();
         return ResponseEntity.created(uri).build();
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<Pedido>> listarPedidosPaginada(
+            @RequestParam(value = "pagina", defaultValue = "0") Integer pagina,
+            @RequestParam(value = "linhas", defaultValue = "24") Integer linhas,
+            @RequestParam(value = "ordenadoPor", defaultValue = "instante") String ordenadoPor,
+            @RequestParam(value = "ordem", defaultValue = "DESC") String ordem){
+        logPedidoResource.getLogger().info(Mensagens.MSG_REQUISICAO_LISTAGEM_PAGINADA,getClass().getSimpleName());
+        Page<Pedido> list = pedidoService.obterPedidosDoCliente(pagina,linhas,ordenadoPor,ordem);
+        return ResponseEntity.ok().body(list);
     }
 }

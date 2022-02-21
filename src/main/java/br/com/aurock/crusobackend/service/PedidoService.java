@@ -1,15 +1,21 @@
 package br.com.aurock.crusobackend.service;
 
+import br.com.aurock.crusobackend.domain.Cliente;
 import br.com.aurock.crusobackend.domain.ItemPedido;
 import br.com.aurock.crusobackend.domain.PagamentoBoleto;
 import br.com.aurock.crusobackend.domain.Pedido;
 import br.com.aurock.crusobackend.domain.enuns.EstadoPagamento;
 import br.com.aurock.crusobackend.repository.ItemPedidoRepository;
 import br.com.aurock.crusobackend.repository.PedidoRepository;
+import br.com.aurock.crusobackend.security.UsuarioSS;
 import br.com.aurock.crusobackend.service.exceptions.ObjetoNaoEncontradoException;
+import br.com.aurock.crusobackend.service.exceptions.OperacaoNaoAutorizadaException;
 import br.com.aurock.crusobackend.util.Log;
 import br.com.aurock.crusobackend.util.Mensagens;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -69,5 +75,18 @@ public class PedidoService {
         logPedidoService.getLogger().info(Mensagens.MSG_SERVICE_CRIA_OBJETO_RESULTADO,novoPedido,true);
         emailService.enviaEmailHtmlConfirmacaoPedido(novoPedido);
         return novoPedido;
+    }
+
+    public Page<Pedido> obterPedidosDoCliente(Integer pagina, Integer linhas, String ordenadoPor, String ordem){
+        logPedidoService.getLogger().info(Mensagens.MSG_SERVICE_LISTAR_PAGINADA_OBJETO, getClass().getSimpleName());
+        logPedidoService.getLogger().info(Mensagens.MSG_VALIDACAO_USUARIO);
+        UsuarioSS usuarioSS = UserService.obterUsuarioLogado();
+        if(usuarioSS == null){
+            logPedidoService.getLogger().info(Mensagens.MSG_USUARIO_NAO_LOGADO);
+            throw new OperacaoNaoAutorizadaException("Acesso negado!");
+        }
+        PageRequest paginacao = PageRequest.of(pagina, linhas, Sort.Direction.valueOf(ordem), ordenadoPor);
+        Cliente cliente = clienteService.obterDadosCliente(usuarioSS.getId());
+        return pedidoRepository.findByCliente(cliente,paginacao);
     }
 }
