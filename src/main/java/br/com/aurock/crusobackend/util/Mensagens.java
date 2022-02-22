@@ -39,5 +39,11 @@ public class Mensagens {
     public static final String MSG_ERRO_AUTENTICACAO = "Houve um erro no processo de autenticação";
     public static final String MSG_VALIDACAO_USUARIO = "Verificando se o usuário está logado!";
     public static final String MSG_USUARIO_NAO_LOGADO = "A requisição foi feita por um usuário não logado!";
+    public static final String MSG_SERVICO_ESQUECI_SENHA = "Iniciando serviço de esqueci senha!";
+    public static final String MSG_GERANDO_SENHA = "{} senha aleatória";
+    public static final String MSG_ENVIANDO_EMAIL_NOVA_SENHA = "Enviando nova senha por email para {}";
+    public static final String MSG_EMAIL_NOVA_SENHA = "Ola {0}, sua nova senha foi gerada, ela é {1}";
+    public static final String MSG_TITULO_EMAIL_NOVA_SENHA = "Nova senha de acesso";
+    public static final String MSG_CAMPO_OBRIGATORIO = "Campo obrigatório para preenchimento";
 
 }

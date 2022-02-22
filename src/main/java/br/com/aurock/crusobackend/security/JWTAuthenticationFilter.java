@@ -3,8 +3,6 @@ package br.com.aurock.crusobackend.security;
 import br.com.aurock.crusobackend.domain.CredenciaisDTO;
 import br.com.aurock.crusobackend.security.exceptions.FalhaNoProcessoDeAutenticacao;
 import br.com.aurock.crusobackend.util.Mensagens;
-import com.fasterxml.jackson.core.exc.StreamReadException;
-import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

@@ -1,5 +1,6 @@
 package br.com.aurock.crusobackend.service;
 
+import br.com.aurock.crusobackend.domain.Cliente;
 import br.com.aurock.crusobackend.domain.Pedido;
 import br.com.aurock.crusobackend.util.Mensagens;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import javax.swing.*;
 import java.util.Date;
 
 public abstract class AbastractEmailService implements EmailService{
@@ -67,5 +67,21 @@ public abstract class AbastractEmailService implements EmailService{
         mimeMessageHelper.setSentDate(new Date(System.currentTimeMillis()));
         mimeMessageHelper.setText(htmlParaTemplatePedido(pedido),true);
         return mimeMessage;
+    }
+
+    @Override
+    public void enviaEmailNovaSenha(Cliente cliente, String novaSenha){
+        SimpleMailMessage sm = criaMsgNovaSenhaPedido(cliente,novaSenha);
+        enviaEmail(sm);
+    }
+
+    protected SimpleMailMessage criaMsgNovaSenhaPedido(Cliente cliente,String novaSenha){
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(cliente.getEmail());
+        message.setFrom(remetente);
+        message.setSubject(Mensagens.MSG_TITULO_EMAIL_NOVA_SENHA);
+        message.setSentDate(new Date(System.currentTimeMillis()));
+        message.setText(Mensagens.MSG_EMAIL_NOVA_SENHA.replace("{0}",cliente.getNome()).replace("{1}",novaSenha));
+        return message;
     }
 }
