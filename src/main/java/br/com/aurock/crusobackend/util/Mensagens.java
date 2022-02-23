@@ -45,5 +45,6 @@ public class Mensagens {
     public static final String MSG_EMAIL_NOVA_SENHA = "Ola {0}, sua nova senha foi gerada, ela é {1}";
     public static final String MSG_TITULO_EMAIL_NOVA_SENHA = "Nova senha de acesso";
     public static final String MSG_CAMPO_OBRIGATORIO = "Campo obrigatório para preenchimento";
+    public static final String MSG_UPLOAD_ARQUIVO = "{} upload do arquivo {}";
 
 }

@@ -59,4 +59,10 @@ public class ResourceExceptionHandler {
         ObjetoErro erro = new ObjetoErro(HttpStatus.FORBIDDEN.value(), e.getMessage(), System.currentTimeMillis());
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(erro);
     }
+
+    @ExceptionHandler(AmazonException.class)
+    public ResponseEntity<ObjetoErro> amazonException(AmazonException e, HttpServletRequest request){
+        ObjetoErro erro = new ObjetoErro(HttpStatus.NO_CONTENT.value(), e.getMessage(),System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(erro);
+    }
 }
