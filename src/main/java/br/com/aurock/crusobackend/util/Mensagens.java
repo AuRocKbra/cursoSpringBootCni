@@ -46,5 +46,8 @@ public class Mensagens {
     public static final String MSG_TITULO_EMAIL_NOVA_SENHA = "Nova senha de acesso";
     public static final String MSG_CAMPO_OBRIGATORIO = "Campo obrigatório para preenchimento";
     public static final String MSG_UPLOAD_ARQUIVO = "{} upload do arquivo {}";
+    public static final String MSG_ERRO_UPLOAD = "Erro ao processar arquivo {} - Erro : ";
+    public static final String MSG_ACESSO_NEGADO = "Acesso negado para login {}";
+    public static final String MSG_SALVANDO_DADO = "Salvando {} no banco de dados";
 
 }

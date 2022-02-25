@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -77,6 +78,13 @@ public class ClienteResource {
         Cliente novoCliente = clienteService.converteClienteNovoDTOParaCliente(clienteNovoDTO);
         novoCliente = clienteService.criaNovoCliente(novoCliente);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(novoCliente.getId()).toUri();
+        return ResponseEntity.created(uri).build();
+    }
+
+    @PostMapping(value = "/uploadFotoPerfil")
+    public ResponseEntity<Void> uploadFotoPerfil(@RequestParam(value = "foto")MultipartFile foto){
+        logResourceCliente.getLogger().info(Mensagens.MSG_REQUISICAO_CRIACAO_OBJETO,getClass().getSimpleName());
+        URI uri = clienteService.uploadFotoPerfil(foto);
         return ResponseEntity.created(uri).build();
     }
 }

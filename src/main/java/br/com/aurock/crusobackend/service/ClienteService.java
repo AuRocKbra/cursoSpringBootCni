@@ -17,6 +17,7 @@ import br.com.aurock.crusobackend.service.exceptions.OperacaoNaoRealizadaExcepti
 import br.com.aurock.crusobackend.util.Log;
 import br.com.aurock.crusobackend.util.Mensagens;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,7 +25,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.image.BufferedImage;
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,6 +43,15 @@ public class ClienteService {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private S3Service s3Service;
+
+    @Autowired
+    private ImagenService imagenService;
+
+    @Value("${img.prefix.client.profile}")
+    private String prefixoImagem;
 
     private final Log logClienteService = new Log(this);
 
@@ -129,5 +142,18 @@ public class ClienteService {
             cliente.getTelefones().add(clienteNovoDTO.getTelefone3());
         }
         return cliente;
+    }
+
+    public URI uploadFotoPerfil(MultipartFile multipartFile){
+        logClienteService.getLogger().info(Mensagens.MSG_SERVICE_CRIA_OBJETO,getClass().getSimpleName());
+        UsuarioSS usuarioSS = UserService.obterUsuarioLogado();
+        logClienteService.getLogger().info(Mensagens.MSG_VALIDACAO_USUARIO);
+        if(usuarioSS == null){
+            logClienteService.getLogger().info(Mensagens.MSG_USUARIO_NAO_LOGADO);
+            throw new OperacaoNaoAutorizadaException(Mensagens.MSG_ACESSO_NEGADO);
+        }
+        BufferedImage bufferedImage = imagenService.getImagemJpgDeArquivo(multipartFile);
+        String arquivo = prefixoImagem + usuarioSS.getId() + ".jpg";
+        return s3Service.uploadArquivo(imagenService.getImputStream(bufferedImage,"jpg"),arquivo,"image");
     }
 }

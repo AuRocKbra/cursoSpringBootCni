@@ -62,7 +62,7 @@ public class ResourceExceptionHandler {
 
     @ExceptionHandler(AmazonException.class)
     public ResponseEntity<ObjetoErro> amazonException(AmazonException e, HttpServletRequest request){
-        ObjetoErro erro = new ObjetoErro(HttpStatus.NO_CONTENT.value(), e.getMessage(),System.currentTimeMillis());
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(erro);
+        ObjetoErro erro = new ObjetoErro(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage(),System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(erro);
     }
 }
