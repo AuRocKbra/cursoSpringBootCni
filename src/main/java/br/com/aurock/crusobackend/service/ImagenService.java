@@ -3,6 +3,7 @@ package br.com.aurock.crusobackend.service;
 import br.com.aurock.crusobackend.service.exceptions.OperacaoNaoRealizadaException;
 import br.com.aurock.crusobackend.util.Mensagens;
 import org.apache.commons.io.FilenameUtils;
+import org.imgscalr.Scalr;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -47,5 +48,14 @@ public class ImagenService {
         }catch (IOException e){
             throw new OperacaoNaoRealizadaException("Erro ao abrir aquivo!");
         }
+    }
+
+    public BufferedImage recortarImagem(BufferedImage imagenOriginal){
+        int min = (imagenOriginal.getHeight() <= imagenOriginal.getWidth()) ? imagenOriginal.getHeight() : imagenOriginal.getWidth();
+        return Scalr.crop(imagenOriginal,(imagenOriginal.getWidth()/2) - (min/2),(imagenOriginal.getHeight()/2) - (min/2),min,min);
+    }
+
+    public BufferedImage redimencionar(BufferedImage imagenOriginal, int recorte){
+        return Scalr.resize(imagenOriginal,Scalr.Method.ULTRA_QUALITY,recorte);
     }
 }

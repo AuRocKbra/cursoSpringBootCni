@@ -53,6 +53,9 @@ public class ClienteService {
     @Value("${img.prefix.client.profile}")
     private String prefixoImagem;
 
+    @Value("${img.profile.size}")
+    private int tamanhoImagens;
+
     private final Log logClienteService = new Log(this);
 
     public Cliente obterDadosCliente(Integer id){
@@ -153,6 +156,8 @@ public class ClienteService {
             throw new OperacaoNaoAutorizadaException(Mensagens.MSG_ACESSO_NEGADO);
         }
         BufferedImage bufferedImage = imagenService.getImagemJpgDeArquivo(multipartFile);
+        bufferedImage = imagenService.recortarImagem(bufferedImage);
+        bufferedImage = imagenService.redimencionar(bufferedImage,tamanhoImagens);
         String arquivo = prefixoImagem + usuarioSS.getId() + ".jpg";
         return s3Service.uploadArquivo(imagenService.getImputStream(bufferedImage,"jpg"),arquivo,"image");
     }
