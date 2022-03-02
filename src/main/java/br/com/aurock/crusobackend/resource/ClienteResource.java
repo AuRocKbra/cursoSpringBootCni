@@ -30,7 +30,7 @@ public class ClienteResource {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<Cliente> obterDadosCliente(@PathVariable Integer id){
-        logResourceCliente.getLogger().info(Mensagens.MSG_REQUISICAO_BUSCA_POR_ID,getClass().getSimpleName());
+        logResourceCliente.getLogger().info(Mensagens.MSG_REQUISICAO_BUSCA,"id",getClass().getSimpleName());
         return ResponseEntity.ok().body(clienteService.obterDadosCliente(id));
     }
 
@@ -86,5 +86,11 @@ public class ClienteResource {
         logResourceCliente.getLogger().info(Mensagens.MSG_REQUISICAO_CRIACAO_OBJETO,getClass().getSimpleName());
         URI uri = clienteService.uploadFotoPerfil(foto);
         return ResponseEntity.created(uri).build();
+    }
+
+    @GetMapping(value = "/email")
+    public ResponseEntity<Cliente> obterDadosClientePorEmail(@RequestParam(value = "email") String email){
+        logResourceCliente.getLogger().info(Mensagens.MSG_REQUISICAO_BUSCA,"email",getClass().getSimpleName());
+        return ResponseEntity.ok().body(clienteService.obterDadosClientePorEmail(email));
     }
 }

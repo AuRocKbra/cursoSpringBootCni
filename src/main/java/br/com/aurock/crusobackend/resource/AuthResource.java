@@ -5,6 +5,7 @@ import br.com.aurock.crusobackend.security.JWTUtil;
 import br.com.aurock.crusobackend.security.UsuarioSS;
 import br.com.aurock.crusobackend.service.AuthService;
 import br.com.aurock.crusobackend.service.UserService;
+import br.com.aurock.crusobackend.service.exceptions.OperacaoNaoRealizadaException;
 import br.com.aurock.crusobackend.util.Log;
 import br.com.aurock.crusobackend.util.Mensagens;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,13 @@ public class AuthResource {
     public ResponseEntity<Void> revalidarToken(HttpServletResponse response){
         logger.getLogger().info(Mensagens.MSG_REQUISICAO_CRIACAO_OBJETO,getClass().getSimpleName());
         UsuarioSS usuarioSS = UserService.obterUsuarioLogado();
+        if(usuarioSS == null){
+            logger.getLogger().error(Mensagens.MSG_USUARIO_NAO_LOGADO);
+            throw new OperacaoNaoRealizadaException("Não foi possível fazer o refresh do token. Motivo : {}".replace("{}",Mensagens.MSG_USUARIO_NAO_LOGADO));
+        }
         String token = jwtUtil.geraToken(usuarioSS.getUsername());
         response.addHeader("Authorization","Bearer " + token);
+        response.addHeader("access-control-expose-headers","Authorization");
         return ResponseEntity.noContent().build();
     }
 

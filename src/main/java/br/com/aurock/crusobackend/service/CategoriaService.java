@@ -27,9 +27,9 @@ public class CategoriaService {
     private final Log logCategoriaService = new Log(this);
 
     public Categoria buscarCategoria(Integer id){
-        logCategoriaService.getLogger().info(Mensagens.MSG_SERVICE_BUSCA_ID,getClass().getSimpleName(),id);
+        logCategoriaService.getLogger().info(Mensagens.MSG_SERVICE_BUSCA,getClass().getSimpleName(),"id",id);
         Optional<Categoria> categoria = categoriaRepository.findById(id);
-        logCategoriaService.getLogger().info(Mensagens.MSG_RESULTADO_BUSCA_ID,id,categoria.isPresent());
+        logCategoriaService.getLogger().info(Mensagens.MSG_RESULTADO_BUSCA,"id",id,categoria.isPresent());
         return categoria.orElseThrow(()->new ObjetoNaoEncontradoException(Mensagens.MSG_OBJECTO_NAO_ENCONTRADO,null));
     }
 

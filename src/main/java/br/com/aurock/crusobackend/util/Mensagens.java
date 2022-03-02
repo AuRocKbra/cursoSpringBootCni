@@ -4,10 +4,10 @@ public class Mensagens {
 
     private Mensagens(){}
 
-    public static final String MSG_SERVICE_BUSCA_ID = "Serviço de busca de {}: Buscando por registro de ID = {}";
-    public static final String MSG_RESULTADO_BUSCA_ID = "Resultado da busca pelo de ID = {} -> Valor encontrado ? {}";
+    public static final String MSG_SERVICE_BUSCA = "Serviço de busca de {}: Buscando por registro de {} = {}";
+    public static final String MSG_RESULTADO_BUSCA = "Resultado da busca pelo {} = {} -> Valor encontrado ? {}";
     public static final String MSG_OBJECTO_NAO_ENCONTRADO = "Nenhum registro foi encontrado!";
-    public static final String MSG_REQUISICAO_BUSCA_POR_ID = "Requisição de busca por id recebida pelo resource {}";
+    public static final String MSG_REQUISICAO_BUSCA = "Requisição de busca por {} recebida pelo resource {}";
     public static final String MSG_REQUISICAO_CRIACAO_OBJETO = "Requisição de criação recebida pelo resource {}";
     public static final String MSG_SERVICE_CRIA_OBJETO = "Serviço de criação de {}: Criando novo registro";
     public static final String MSG_SERVICE_ATUALIZA_OBJETO = "Serviço de atualização de {}: Atualizando objeto de ID = {}";
@@ -48,6 +48,5 @@ public class Mensagens {
     public static final String MSG_UPLOAD_ARQUIVO = "{} upload do arquivo {}";
     public static final String MSG_ERRO_UPLOAD = "Erro ao processar arquivo {} - Erro : ";
     public static final String MSG_ACESSO_NEGADO = "Acesso negado para login {}";
-    public static final String MSG_SALVANDO_DADO = "Salvando {} no banco de dados";
-
+    public static final String MSG_COVERTENDO_VALOR = "Iniciando processo de conversão de objetos de {} para {}";
 }

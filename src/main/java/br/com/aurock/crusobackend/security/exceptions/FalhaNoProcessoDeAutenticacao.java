@@ -1,10 +1,8 @@
 package br.com.aurock.crusobackend.security.exceptions;
 
-import java.awt.event.FocusEvent;
-
 public class FalhaNoProcessoDeAutenticacao extends RuntimeException{
 
-    private static final long serialVersionUID = 1l;
+    private static final long serialVersionUID = 1L;
 
     public FalhaNoProcessoDeAutenticacao( String mensagem){
         super(mensagem);

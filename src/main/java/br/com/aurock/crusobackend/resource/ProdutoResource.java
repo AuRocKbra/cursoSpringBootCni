@@ -25,7 +25,7 @@ public class ProdutoResource {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<Produto> buscaProdutoPorId(@PathVariable Integer id){
-        loggerProdutoResource.getLogger().info(Mensagens.MSG_REQUISICAO_BUSCA_POR_ID,getClass().getSimpleName());
+        loggerProdutoResource.getLogger().info(Mensagens.MSG_REQUISICAO_BUSCA,"id",getClass().getSimpleName());
         return ResponseEntity.ok().body(produtoService.obterProdutoPorId(id));
     }
 

@@ -28,9 +28,9 @@ public class ProdutoService {
     private final Log loggerProdutoService = new Log(this);
 
     public Produto obterProdutoPorId(Integer id){
-        loggerProdutoService.getLogger().info(Mensagens.MSG_SERVICE_BUSCA_ID,getClass().getSimpleName(),id);
+        loggerProdutoService.getLogger().info(Mensagens.MSG_SERVICE_BUSCA,getClass().getSimpleName(),"id",id);
         Optional<Produto> produto = produtoRepository.findById(id);
-        loggerProdutoService.getLogger().info(Mensagens.MSG_RESULTADO_BUSCA_ID,id,produto.isPresent());
+        loggerProdutoService.getLogger().info(Mensagens.MSG_RESULTADO_BUSCA,"id",id,produto.isPresent());
         return produto.orElseThrow(()->new ObjetoNaoEncontradoException(Mensagens.MSG_OBJECTO_NAO_ENCONTRADO));
     }
 

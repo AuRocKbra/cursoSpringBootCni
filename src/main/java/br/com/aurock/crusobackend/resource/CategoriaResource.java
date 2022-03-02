@@ -28,7 +28,7 @@ public class CategoriaResource {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<Categoria> buscarCategoria(@PathVariable Integer id){
-        logRecursoCategoria.getLogger().info(Mensagens.MSG_REQUISICAO_BUSCA_POR_ID,getClass().getSimpleName());
+        logRecursoCategoria.getLogger().info(Mensagens.MSG_REQUISICAO_BUSCA,"id",getClass().getSimpleName());
         return ResponseEntity.ok().body(categoriaService.buscarCategoria(id));
     }
 

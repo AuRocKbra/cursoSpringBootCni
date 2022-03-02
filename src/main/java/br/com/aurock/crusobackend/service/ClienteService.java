@@ -29,8 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.awt.image.BufferedImage;
 import java.net.URI;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ClienteService {
@@ -58,16 +57,16 @@ public class ClienteService {
 
     private final Log logClienteService = new Log(this);
 
+    private final String [] comparadores = {"id","email"};
+
+    private Map<String,String> valor = new HashMap<>();
+
     public Cliente obterDadosCliente(Integer id){
-        logClienteService.getLogger().info(Mensagens.MSG_SERVICE_BUSCA_ID,getClass().getSimpleName(),id);
-        logClienteService.getLogger().info(Mensagens.MSG_VALIDACAO_USUARIO);
-        UsuarioSS usuarioSS = UserService.obterUsuarioLogado();
-        if(usuarioSS == null || !usuarioSS.validaPerfil(Perfil.ADMIN) && !id.equals(usuarioSS.getId())){
-            logClienteService.getLogger().info(Mensagens.MSG_USUARIO_NAO_LOGADO);
-            throw new OperacaoNaoAutorizadaException("Acesso negado!");
-        }
+        logClienteService.getLogger().info(Mensagens.MSG_SERVICE_BUSCA,getClass().getSimpleName(),"id",id);
+        valor.put(comparadores[0],String.valueOf(id));
+        validaSeUsuarioLogado(valor);
         Optional<Cliente> cliente = clienteRepository.findById(id);
-        logClienteService.getLogger().info(Mensagens.MSG_RESULTADO_BUSCA_ID,id,cliente.isPresent());
+        logClienteService.getLogger().info(Mensagens.MSG_RESULTADO_BUSCA,comparadores[0],id,cliente.isPresent());
         return cliente.orElseThrow(()->new ObjetoNaoEncontradoException(Mensagens.MSG_OBJECTO_NAO_ENCONTRADO,null));
     }
 
@@ -105,7 +104,8 @@ public class ClienteService {
 
     public void deletaClientePorId(Integer id){
         logClienteService.getLogger().info(Mensagens.MSG_SERVICE_DELETA_OBJETO,getClass().getSimpleName(),id);
-        obterDadosCliente(id);
+        valor.put("id",String.valueOf(id));
+        validaSeUsuarioLogado(valor);
         try{
             clienteRepository.deleteById(id);
             logClienteService.getLogger().info(Mensagens.MSG_RESULTADO_DELETA,id,true);
@@ -160,5 +160,37 @@ public class ClienteService {
         bufferedImage = imagenService.redimencionar(bufferedImage,tamanhoImagens);
         String arquivo = prefixoImagem + usuarioSS.getId() + ".jpg";
         return s3Service.uploadArquivo(imagenService.getImputStream(bufferedImage,"jpg"),arquivo,"image");
+    }
+
+    public Cliente obterDadosClientePorEmail(String email){
+        logClienteService.getLogger().info(Mensagens.MSG_SERVICE_BUSCA,getClass().getSimpleName(),"email",email);
+        valor.put(comparadores[1],email);
+        validaSeUsuarioLogado(valor);
+        Cliente cliente = clienteRepository.findByEmail(email);
+        if(cliente == null){
+            logClienteService.getLogger().info(Mensagens.MSG_OBJECTO_NAO_ENCONTRADO);
+            throw new ObjetoNaoEncontradoException(Mensagens.MSG_OBJECTO_NAO_ENCONTRADO,null);
+        }
+        logClienteService.getLogger().info(Mensagens.MSG_RESULTADO_BUSCA,comparadores[1],email,true);
+        return cliente;
+    }
+
+    private void validaSeUsuarioLogado(Map<String,String> valor){
+        logClienteService.getLogger().info(Mensagens.MSG_VALIDACAO_USUARIO);
+        UsuarioSS usuarioSS = UserService.obterUsuarioLogado();
+        if(usuarioSS == null || (!usuarioSS.validaPerfil(Perfil.ADMIN) && !validaValorUsuario(valor,usuarioSS))){
+            logClienteService.getLogger().info(Mensagens.MSG_USUARIO_NAO_LOGADO);
+            throw new OperacaoNaoAutorizadaException("Acesso negado!");
+        }
+    }
+
+    private boolean validaValorUsuario(Map<String,String>valor, UsuarioSS usuarioSS){
+        if(valor.containsKey(comparadores[0])){
+            return Integer.parseInt(valor.get(comparadores[0])) == usuarioSS.getId();
+        }
+        if(valor.containsKey(comparadores[1])){
+            return valor.get(comparadores[1]).equals(usuarioSS.getUsername());
+        }
+        return false;
     }
 }

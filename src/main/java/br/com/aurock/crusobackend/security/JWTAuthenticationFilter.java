@@ -1,6 +1,6 @@
 package br.com.aurock.crusobackend.security;
 
-import br.com.aurock.crusobackend.domain.CredenciaisDTO;
+import br.com.aurock.crusobackend.domain.dto.CredenciaisDTO;
 import br.com.aurock.crusobackend.security.exceptions.FalhaNoProcessoDeAutenticacao;
 import br.com.aurock.crusobackend.util.Mensagens;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,8 +33,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         try{
             CredenciaisDTO credenciaisDTO = new ObjectMapper().readValue(request.getInputStream(),CredenciaisDTO.class);
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(credenciaisDTO.getEmail(),credenciaisDTO.getSenha(), new ArrayList<>());
-            Authentication authentication = authenticationManager.authenticate(authenticationToken);
-            return authentication;
+            return  authenticationManager.authenticate(authenticationToken);
+
         }
         catch (IOException e) {
             throw new FalhaNoProcessoDeAutenticacao(Mensagens.MSG_ERRO_AUTENTICACAO);
@@ -46,5 +46,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String username = ((UsuarioSS) auth.getPrincipal()).getUsername();
         String token = jwtUtil.geraToken(username);
         response.addHeader("Authorization","Bearer "+token);
+        response.addHeader("access-control-expose-headers","Authorization");
     }
 }
