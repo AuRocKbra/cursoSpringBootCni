@@ -13,8 +13,8 @@ public class ObjetoErro implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private Integer statusErro;
-    private String msg;
+    private String mensagem;
     private Long timeStamp;
-
+    private String caminho;
 
 }

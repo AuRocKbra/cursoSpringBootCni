@@ -9,8 +9,8 @@ public class ObjetoDeValidacao extends ObjetoErro{
 
     private List<CamposMensagemValidacao> erros = new ArrayList<>();
 
-    public ObjetoDeValidacao(Integer statusErro, String msg, Long timeStamp) {
-        super(statusErro, msg, timeStamp);
+    public ObjetoDeValidacao(Integer statusErro, String msg, Long timeStamp, String caminho) {
+        super(statusErro, msg, timeStamp,caminho);
     }
 
     public List<CamposMensagemValidacao> getErros(){
